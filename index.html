@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Mechanics 3D Labeller</title>
+  <link rel="stylesheet" href="styles.css" />
+  <script type="importmap">
+  {
+    "imports": {
+      "three": "https://cdn.jsdelivr.net/npm/three@0.186.1/build/three.module.js",
+      "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.186.1/examples/jsm/"
+    }
+  }
+  </script>
+</head>
+<body>
+  <header class="topbar">
+    <div>
+      <h1>Mechanics 3D Labeller</h1>
+      <p>Load any GLB, click to annotate it, and preview it here in your browser.</p>
+    </div>
+    <div class="top-actions">
+      <label class="file-btn">Load GLB<input id="glbInput" type="file" accept=".glb,model/gltf-binary" /></label>
+      <label class="file-btn secondary">Import JSON<input id="jsonInput" type="file" accept=".json,application/json" /></label>
+      <button id="exportBtn" disabled>Export JSON</button>
+      <button id="previewBtn" disabled>Preview Viewer</button>
+      <a class="demo-link" href="viewer.html?project=projects/demo/demo.annotations.json">View Demo</a>
+    </div>
+  </header>
+
+  <main class="layout">
+    <aside class="panel left-panel">
+      <section>
+        <h2>1. Tools</h2>
+        <div class="tool-grid" id="toolGrid">
+          <button class="tool active" data-mode="select">Orbit / Select</button>
+          <button class="tool" data-mode="label">Label</button>
+          <button class="tool" data-mode="dimension">Length</button>
+          <button class="tool" data-mode="vector">Vector</button>
+        </div>
+        <p id="modeHelp" class="help">Orbit the model. Click an existing annotation to edit it.</p>
+      </section>
+
+      <section>
+        <h2>2. Dimension settings</h2>
+        <label>Display multiplier
+          <input id="scaleInput" type="number" step="any" value="1" />
+        </label>
+        <label>Unit
+          <input id="unitInput" type="text" value="units" maxlength="12" />
+        </label>
+        <p class="help">Example: if your GLB is in mm but you want meters, use 0.001 and unit “m”.</p>
+      </section>
+
+      <section>
+        <h2>3. Annotations</h2>
+        <div id="annotationList" class="annotation-list">
+          <p class="empty">No annotations yet.</p>
+        </div>
+      </section>
+    </aside>
+
+    <section class="viewport-wrap">
+      <div id="viewport"></div>
+      <div id="emptyState" class="empty-state">
+        <strong>Load a .glb file to begin</strong>
+        <span>Then choose Label, Length, or Vector and click on the model.</span>
+      </div>
+      <div id="status" class="status">Ready.</div>
+      <div class="view-controls">
+        <button id="fitBtn" disabled>Fit Model</button>
+        <button id="clearPickBtn" disabled>Cancel Placement</button>
+      </div>
+      <div class="preview-toolbar hidden" id="previewToolbar">
+        <button id="exitPreviewBtn" type="button">Back to Editor</button>
+        <span>Drag to rotate · scroll or pinch to zoom</span>
+      </div>
+    </section>
+
+    <aside class="panel right-panel">
+      <section>
+        <h2>Edit selected</h2>
+        <div id="noSelection" class="empty">Select an annotation from the list.</div>
+        <form id="editForm" class="edit-form hidden">
+          <label>Type
+            <input id="typeField" type="text" readonly />
+          </label>
+          <label>Text
+            <input id="textField" type="text" />
+          </label>
+          <label id="autoRow" class="check-row hidden">
+            <input id="autoTextField" type="checkbox" checked />
+            Automatically show measured length
+          </label>
+          <div id="measurementBox" class="measurement hidden"></div>
+          <button id="deleteBtn" class="danger" type="button">Delete annotation</button>
+        </form>
+      </section>
+
+      <section>
+        <h2>How placement works</h2>
+        <ul class="instructions">
+          <li><b>Label:</b> one click.</li>
+          <li><b>Length:</b> click endpoint 1, then endpoint 2.</li>
+          <li><b>Vector:</b> click the tail, then the arrow head.</li>
+          <li>Drag normally to rotate. A placement is only made on a click, not a drag.</li>
+        </ul>
+      </section>
+    </aside>
+  </main>
+
+  <script type="module" src="editor.js"></script>
+</body>
+</html>

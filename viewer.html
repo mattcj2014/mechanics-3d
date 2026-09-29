@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Mechanics 3D Viewer</title>
+  <link rel="stylesheet" href="viewer.css" />
+  <script type="importmap">
+  {"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.186.1/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.186.1/examples/jsm/"}}
+  </script>
+</head>
+<body>
+  <main id="app">
+    <div id="viewport"></div>
+    <header class="viewer-bar">
+      <strong id="title">Mechanics 3D</strong>
+      <div><a class="back-link" href="index.html">Editor</a><button id="resetBtn">Reset View</button><button id="labelsBtn">Hide Labels</button></div>
+    </header>
+    <div id="message" class="message">Loading…</div>
+  </main>
+  <script type="module" src="viewer.js"></script>
+</body>
+</html>
