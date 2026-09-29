@@ -1,0 +1,60 @@
+{
+  "version": 1,
+  "model": "test.glb",
+  "settings": {
+    "displayScale": 1,
+    "unit": "units"
+  },
+  "annotations": [
+    {
+      "id": "label1",
+      "type": "label",
+      "text": "(3, 0, 1)",
+      "position": [
+        -0.00144375,
+        -0.00251679,
+        1
+      ]
+    },
+    {
+      "id": "label2",
+      "type": "label",
+      "text": "(0, 1, 2)",
+      "position": [
+        0.60594114,
+        0.50299106,
+        0
+      ]
+    },
+    {
+      "id": "label3",
+      "type": "label",
+      "text": "(0, -1, 2)",
+      "position": [
+        -0.55546757,
+        0.40105504,
+        0
+      ]
+    },
+    {
+      "id": "label4",
+      "type": "label",
+      "text": "(0, 0, 1)",
+      "position": [
+        -0.01471612,
+        0.02567973,
+        0
+      ]
+    },
+    {
+      "id": "label5",
+      "type": "label",
+      "text": "(0, 0, 0)",
+      "position": [
+        -0.01728256,
+        -0.28224267,
+        0
+      ]
+    }
+  ]
+}
