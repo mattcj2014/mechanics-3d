@@ -86,3 +86,5 @@ input[type="text"], input[type="number"] { width: 100%; border: 1px solid #b9c2c
   body.preview-mode { overflow: hidden; }
   body.preview-mode .layout { display: block; }
 }
+#qrCanvas{display:block;width:100%;max-width:240px;height:auto;margin:12px auto;background:#fff}input[type=url]{width:100%;border:1px solid #b9c2cd;border-radius:6px;padding:8px;font:inherit}.publish-actions{display:flex;flex-wrap:wrap;gap:7px;margin:8px 0}.publish-actions button,.publish-actions a{font-size:12px}.publish-actions a{color:#185abd;padding:8px 0}#publishPackBtn{width:100%;background:#185abd;border-color:#185abd;color:white}.topbar{height:auto;min-height:78px}.layout{height:calc(100dvh - 100px)}@media(max-width:950px){.layout{height:auto}}
+@media(min-width:951px){body{height:100dvh;display:flex;flex-direction:column}.topbar{flex:none}.layout{flex:1;height:auto;min-height:0}body.preview-mode .layout{height:100dvh;flex:none}}

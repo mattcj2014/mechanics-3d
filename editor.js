@@ -1,3 +1,4 @@
+import { setupPublishing } from './publishing.js';
 import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
@@ -137,6 +138,7 @@ function fitModel() {
 
 async function loadGLBFile(file) {
   if (!file) return;
+  exportBtn.disabled = true; previewBtn.disabled = true;
   disposeModel();
   annotations = [];
   selectedId = null;
@@ -157,6 +159,7 @@ async function loadGLBFile(file) {
     previewBtn.disabled = false;
     fitBtn.disabled = false;
     fitModel();
+    publisher.modelLoaded(file);
     setStatus(`Loaded ${file.name}. Choose a tool and click the model.`);
   } catch (err) {
     console.error(err);
@@ -416,6 +419,7 @@ function projectPayload() {
     version: 1,
     model: modelFile?.name || modelFileName,
     settings: { displayScale: displayScale(), unit: unitInput.value.trim() },
+    title: $('problemTitle').value.trim() || modelFileName,
     annotations
   };
 }
@@ -432,15 +436,6 @@ exportBtn.addEventListener('click', () => {
   setStatus(`Exported ${a.download}. Keep it next to the GLB when you host it.`);
 });
 
-previewBtn.addEventListener('click', () => {
-  if (!modelRoot) return;
-  document.body.classList.add('preview-mode');
-  previewToolbar.classList.remove('hidden');
-  document.querySelectorAll('.tool').forEach(b => b.classList.toggle('active', b.dataset.mode === 'select'));
-  mode = 'select';
-  clearPending();
-  resize();
-});
 exitPreviewBtn.addEventListener('click', () => {
   document.body.classList.remove('preview-mode');
   previewToolbar.classList.add('hidden');
@@ -453,6 +448,8 @@ jsonInput.addEventListener('change', async () => {
     const data = JSON.parse(await file.text());
     if (!Array.isArray(data.annotations)) throw new Error('JSON does not contain an annotations array.');
     annotations = data.annotations;
+    $('problemTitle').value = data.title || '';
+    publisher.invalidate();
     modelFileName = data.model || modelFileName;
     scaleInput.value = data.settings?.displayScale ?? 1;
     unitInput.value = data.settings?.unit ?? 'units';
@@ -465,3 +462,5 @@ jsonInput.addEventListener('change', async () => {
     setStatus(`Could not import JSON: ${err.message}`);
   }
 });
+
+const publisher = setupPublishing({ getFile: () => modelRoot ? modelFile : null, getPayload: projectPayload, previewBtn });

@@ -1,42 +1,55 @@
-# Mechanics 3D Labeller — GitHub Pages edition
+# Mechanics 3D — editor, student gallery, and QR generator
 
-This is a static website. Anyone can open the editor, choose a `.glb` from their computer, add billboard labels, two-point lengths, and vectors, preview the result, and download an annotation JSON. Visitors do not need to install Python or run a local server. The selected GLB remains in that visitor's browser until they choose to publish it elsewhere.
+## Update your existing GitHub Pages site
 
-The public `viewer.html` reads a GLB and its annotation JSON from the published site. The included cantilever beam demo is a small sample that works immediately after publishing.
+Extract this app ZIP and upload its contents to the root of your existing repository. Replace the existing app files; retain your existing projects folders. If you already have a catalog.json, merge its entries with the included demo entry rather than replacing your catalog.
 
-## Publish using only GitHub's website
+- `index.html` — creator's labeller with publishing tools.
+- `students.html` — student gallery, with search and no editor controls.
+- `viewer.html?project=projects/PROBLEM_ID/problem.annotations.json` — direct student viewer.
 
-1. Sign in to GitHub and create a **public** repository named `mechanics-3d`. You can use another repository name if you prefer; that changes the URL below.
-2. Extract the ZIP. In the repository, choose **Add file → Upload files**. Drag the **contents** of the extracted `mechanics_3d_pages` folder into the upload area. Make sure `index.html` and `viewer.html` are at the repository root, with `projects/demo/demo.glb` and `projects/demo/demo.annotations.json` beneath them. Commit the upload.
-3. Go to **Settings → Pages**. Under **Build and deployment**, choose **Deploy from a branch**; select `main` and `/(root)`, then **Save**. GitHub will show the published address there after deployment.
-4. Open `https://YOUR-USERNAME.github.io/mechanics-3d/` for the public labeller. Click **View Demo** to test the student viewer, or use `https://YOUR-USERNAME.github.io/mechanics-3d/viewer.html`.
+Your existing viewer links using other annotation filenames still work.
 
-GitHub Docs: [configure Pages](https://docs.github.com/en/pages/getting-started-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site) · [upload files in a browser](https://docs.github.com/en/repositories/working-with-files/managing-files/adding-a-file-to-a-repository)
+## Create a finished problem
 
-## Annotate your own GLB online
+1. Open your published site homepage (`index.html`). Load your GLB.
+2. Place labels, two-point lengths, and force vectors. Edit the text and measurement settings.
+3. Click **Preview Viewer** to open a separate student viewer tab. This preview is stored on your current browser only. It is not a public sharing link.
+4. In **Publish & QR code**, enter the problem title and a unique problem ID, such as `beam01`.
+5. Check the **Published site address**. It must be your website homepage, such as `https://YOUR-NAME.github.io/mechanics-3d/`, including the repository folder. It is automatically filled and remembered in this browser.
+6. Click **Generate QR & Link**. Download the PNG for a problem sheet or SVG for sharp printing.
+7. Click **Download Publishing Pack** and extract that ZIP. It contains:
+   - `projects/beam01/model.glb`
+   - `projects/beam01/problem.annotations.json`
+   - `projects/beam01/qr.png` and `qr.svg`
+   - `catalog.json` — existing published gallery entries plus this problem
+   - `PUBLISH.txt` — exact student URL and upload instructions
+8. On GitHub, open the root of the repository. Choose **Add file → Upload files**. Upload the extracted `projects` folder and `catalog.json`. Replace catalog.json and commit. Do not upload the ZIP itself.
+9. Wait for the Pages deployment. Use **Open published viewer** to confirm the model loads, then scan the downloaded QR with your phone.
 
-1. On the published editor, click **Load GLB** and select your model. This loads it in your browser; it does not upload the file to the site.
-2. Choose **Label**, **Length**, or **Vector**. Click the model once for a label, or click two points for a length/vector. Drag to orbit. Select annotations on the left to edit their text.
-3. Click **Preview Viewer** to see the model without editor panels. Click **Back to Editor** to continue.
-4. Click **Export JSON**. The downloaded file will have a name like `plane.annotations.json`. Keep your `plane.glb` with it. If you need to edit later, load the same GLB and use **Import JSON**.
+The QR can be generated before upload, but it only works for students after you publish the files. Once published, they can scan and view without an account or editor. You can close your editor tab and computer.
 
-## Put a finished problem on the public site
+## Several problems and later edits
 
-Using the GitHub website, upload **both** `plane.glb` and `plane.annotations.json` to the same folder, for example `projects/plane01/`. You can drag a folder into **Add file → Upload files**, or create `projects/plane01/README.md` first and then upload the two files inside that folder. Commit the change.
+Use a different problem ID for each new problem. Using the same ID replaces that problem and keeps its printed QR link working. Export JSON is still available for backups. To edit a saved problem, load its model and import its annotation JSON, then use the original problem ID when publishing again.
 
-The public link for that problem is:
+Each publishing pack merges the CURRENT online catalog. Upload one pack and let it deploy before exporting the next. If multiple authors prepare packs concurrently, merge the catalog entries rather than replacing another author's changes. For existing models, add their title, id, and project JSON path to catalog.json if you want them listed in the student gallery. Direct QR links do not require a gallery entry.
 
-`https://YOUR-USERNAME.github.io/mechanics-3d/viewer.html?project=projects/plane01/plane.annotations.json`
+## What GitHub Pages handles
 
-Copy that full link into a QR code generator. Each problem gets its own folder and JSON link; `viewer.html` is shared. The JSON's `model` property must exactly match the GLB's filename, including capitalization.
+This is a static website. Files chosen in the editor stay in the browser until you download and upload the publishing pack. GitHub Pages cannot accept permanent visitor uploads by itself. Fully automatic publishing from one button would require a storage backend or a GitHub authentication integration; this version does not request account credentials.
 
-GitHub Pages is static hosting. **Anyone can use the labeller**, but only people with write access to your repository can publish models for everyone to view. A service with user accounts and file storage would be needed if you want arbitrary visitors to upload and publish directly from the website.
+Anyone can use the online labeller. Only repository writers can publish to your site. No local server is required once the app is on Pages. QR generation and ZIP packaging run in the browser using bundled libraries. Rendering loads Three.js 0.186.1 from jsDelivr and requires internet.
 
-## Files
+## First-time Pages setup
 
-- `index.html`, `editor.js`, `styles.css`: browser-based labeller.
-- `viewer.html`, `viewer.js`, `viewer.css`: public 3D viewer.
-- `projects/demo/`: example beam GLB and annotations.
-- `.nojekyll`: keeps the static files as supplied.
+Create a public repository, upload the app contents, then choose Settings → Pages → Deploy from a branch → main → /(root) → Save. Check the beam demo through students.html.
 
-This version loads Three.js from jsDelivr, so visitors need internet access. GitHub's browser upload has a 25 MiB per-file limit; larger GLBs need another upload workflow or optimization. Avoid sensitive content in models or annotations because the published site is public.
+GitHub Docs: https://docs.github.com/en/pages/getting-started-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site
+
+## Third-party code
+
+Bundled qrcode-generator 1.4.4 (MIT): https://github.com/kazuhikoarase/qrcode-generator
+Bundled JSZip (MIT): https://github.com/Stuk/jszip
+Three.js (MIT, loaded by CDN): https://github.com/mrdoob/three.js
+License headers are retained in the bundled JavaScript.

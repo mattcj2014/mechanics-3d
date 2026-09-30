@@ -18,14 +18,14 @@
   <header class="topbar">
     <div>
       <h1>Mechanics 3D Labeller</h1>
-      <p>Load any GLB, click to annotate it, and preview it here in your browser.</p>
+      <p>Load → annotate → preview → download a publishing pack and QR code.</p>
     </div>
     <div class="top-actions">
       <label class="file-btn">Load GLB<input id="glbInput" type="file" accept=".glb,model/gltf-binary" /></label>
       <label class="file-btn secondary">Import JSON<input id="jsonInput" type="file" accept=".json,application/json" /></label>
       <button id="exportBtn" disabled>Export JSON</button>
       <button id="previewBtn" disabled>Preview Viewer</button>
-      <a class="demo-link" href="viewer.html?project=projects/demo/demo.annotations.json">View Demo</a>
+      <a class="demo-link" href="students.html" target="_blank" rel="noopener">Student Gallery</a>
     </div>
   </header>
 
@@ -98,6 +98,23 @@
         </form>
       </section>
 
+      <section id="publishPanel">
+        <h2>4. Publish &amp; QR code</h2>
+        <label>Problem title<input id="problemTitle" type="text" placeholder="Statics — Problem 1" maxlength="120"></label>
+        <label>Problem ID / folder<input id="problemId" type="text" placeholder="plane01" pattern="[a-z0-9-]+" maxlength="60"></label>
+        <label>Published site address<input id="siteBase" type="url" placeholder="https://YOUR-NAME.github.io/mechanics-3d/"></label>
+        <p class="help">Use your GitHub Pages address, including the repository folder. This is remembered on this browser.</p>
+        <button id="makeQrBtn" disabled>Generate QR &amp; Link</button>
+        <div id="qrResult" class="hidden">
+          <canvas id="qrCanvas" aria-label="Student viewer QR code"></canvas>
+          <label>Student viewer link<input id="studentLink" type="text" readonly></label>
+          <div class="publish-actions"><button id="copyLinkBtn">Copy link</button><a id="openStudentLink" target="_blank" rel="noopener">Open published viewer</a></div>
+          <div class="publish-actions"><button id="pngQrBtn">Download QR PNG</button><button id="svgQrBtn">Download QR SVG</button></div>
+          <button id="publishPackBtn">Download Publishing Pack</button>
+          <p class="help">Extract the pack and upload its contents to your GitHub repository. The QR works publicly after that upload deploys.</p>
+        </div>
+        <p id="publishStatus" class="help" role="status">Load a model to begin.</p>
+      </section>
       <section>
         <h2>How placement works</h2>
         <ul class="instructions">
@@ -110,6 +127,8 @@
     </aside>
   </main>
 
+  <script src="vendor/qrcode.js"></script>
+  <script src="vendor/jszip.min.js"></script>
   <script type="module" src="editor.js"></script>
 </body>
 </html>
