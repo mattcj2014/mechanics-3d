@@ -1,1 +1,15 @@
-{"version":1,"problems":[{"id":"demo","title":"Cantilever beam · forces and dimensions","project":"projects/demo/demo.annotations.json"}]}
+{
+  "version": 1,
+  "problems": [
+    {
+      "id": "demo",
+      "title": "Cantilever beam · forces and dimensions",
+      "project": "projects/demo/demo.annotations.json"
+    },
+    {
+      "id": "cablebeam",
+      "title": "cable-suppported-cantilever-beam",
+      "project": "projects/cablebeam/problem.annotations.json"
+    }
+  ]
+}
