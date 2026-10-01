@@ -1,3 +1,4 @@
+import { setupGitHub } from './github-ui.js';
 import { setupPublishing } from './publishing.js';
 import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
@@ -161,9 +162,11 @@ async function loadGLBFile(file) {
     fitModel();
     publisher.modelLoaded(file);
     setStatus(`Loaded ${file.name}. Choose a tool and click the model.`);
+    return true;
   } catch (err) {
     console.error(err);
     setStatus(`Could not load GLB: ${err.message}`);
+    return false;
   }
 }
 
@@ -442,25 +445,31 @@ exitPreviewBtn.addEventListener('click', () => {
   resize();
 });
 
+function applyAnnotations(data) {
+  if (!Array.isArray(data.annotations)) throw new Error('JSON does not contain an annotations array.');
+  annotations = structuredClone(data.annotations);
+  $('problemTitle').value = data.title || '';
+  publisher.invalidate();
+  modelFileName = data.model || modelFileName;
+  scaleInput.value = data.settings?.displayScale ?? 1;
+  unitInput.value = data.settings?.unit ?? 'units';
+  const ids = annotations.map(a => Number(String(a.id).match(/(\d+)$/)?.[1] || 0));
+  nextId = Math.max(1, ...ids) + 1;
+  selectedId = null;
+  rebuildHelpers(); refreshList(); refreshEditor();
+}
 jsonInput.addEventListener('change', async () => {
   const file = jsonInput.files?.[0]; if (!file) return;
-  try {
-    const data = JSON.parse(await file.text());
-    if (!Array.isArray(data.annotations)) throw new Error('JSON does not contain an annotations array.');
-    annotations = data.annotations;
-    $('problemTitle').value = data.title || '';
-    publisher.invalidate();
-    modelFileName = data.model || modelFileName;
-    scaleInput.value = data.settings?.displayScale ?? 1;
-    unitInput.value = data.settings?.unit ?? 'units';
-    const ids = annotations.map(a => Number(String(a.id).match(/(\d+)$/)?.[1] || 0));
-    nextId = Math.max(1, ...ids) + 1;
-    selectedId = null;
-    rebuildHelpers(); refreshList(); refreshEditor();
-    setStatus(`Imported ${file.name}. ${modelRoot ? 'Annotations displayed on the loaded model.' : 'Now load the matching GLB.'}`);
-  } catch (err) {
-    setStatus(`Could not import JSON: ${err.message}`);
-  }
+  try { applyAnnotations(JSON.parse(await file.text())); setStatus(`Imported ${file.name}. ${modelRoot ? 'Annotations displayed on the loaded model.' : 'Now load the matching GLB.'}`); }
+  catch (err) { setStatus(`Could not import JSON: ${err.message}`); }
 });
 
 const publisher = setupPublishing({ getFile: () => modelRoot ? modelFile : null, getPayload: projectPayload, previewBtn });
+
+setupGitHub({publisher,getFile:()=>modelRoot?modelFile:null,getPayload:projectPayload,
+  loadProject:async(file,data,entry)=>{
+    if(!await loadGLBFile(file))throw new Error('Could not load this model.');
+    applyAnnotations(data);publisher.usePublishedProject(entry);
+    setStatus(`Editing ${entry.title}. Publish to update its existing student link.`);
+  }
+});

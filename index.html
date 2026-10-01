@@ -25,6 +25,7 @@
       <label class="file-btn secondary">Import JSON<input id="jsonInput" type="file" accept=".json,application/json" /></label>
       <button id="exportBtn" disabled>Export JSON</button>
       <button id="previewBtn" disabled>Preview Viewer</button>
+      <button id="openLibraryBtn">Manage Models / Connect GitHub</button>
       <a class="demo-link" href="students.html" target="_blank" rel="noopener">Student Gallery</a>
     </div>
   </header>
@@ -104,14 +105,16 @@
         <label>Problem ID / folder<input id="problemId" type="text" placeholder="plane01" pattern="[a-z0-9-]+" maxlength="60"></label>
         <label>Published site address<input id="siteBase" type="url" placeholder="https://YOUR-NAME.github.io/mechanics-3d/"></label>
         <p class="help">Use your GitHub Pages address, including the repository folder. This is remembered on this browser.</p>
+        <button id="directPublishBtn" disabled>Publish to GitHub</button>
+        <p id="connectionHint" class="help">Connect through Manage Models to publish directly.</p>
         <button id="makeQrBtn" disabled>Generate QR &amp; Link</button>
         <div id="qrResult" class="hidden">
           <canvas id="qrCanvas" aria-label="Student viewer QR code"></canvas>
           <label>Student viewer link<input id="studentLink" type="text" readonly></label>
-          <div class="publish-actions"><button id="copyLinkBtn">Copy link</button><a id="openStudentLink" target="_blank" rel="noopener">Open published viewer</a></div>
+          <div class="publish-actions"><button id="copyLinkBtn">Copy link</button><button id="checkLiveBtn" disabled>Check live status</button><a id="openStudentLink" target="_blank" rel="noopener">Open published viewer</a></div>
           <div class="publish-actions"><button id="pngQrBtn">Download QR PNG</button><button id="svgQrBtn">Download QR SVG</button></div>
           <button id="publishPackBtn">Download Publishing Pack</button>
-          <p class="help">Extract the pack and upload its contents to your GitHub repository. The QR works publicly after that upload deploys.</p>
+          <p class="help">Publish directly above, or use this optional ZIP as a backup. QR links work after GitHub Pages finishes deploying.</p>
         </div>
         <p id="publishStatus" class="help" role="status">Load a model to begin.</p>
       </section>
@@ -127,6 +130,33 @@
     </aside>
   </main>
 
+  <dialog id="libraryDialog" class="library-dialog">
+    <div class="dialog-header"><h2>Published model library</h2><button id="closeLibraryBtn" type="button">Close</button></div>
+    <p class="help">Connect your repository to publish, reopen, and manage problems here. Students never need a GitHub connection.</p>
+    <section id="connectionFields" class="connection-grid">
+      <label>GitHub owner / username<input id="githubOwner" type="text" autocomplete="off" placeholder="your-username"></label>
+      <label>Repository name<input id="githubRepo" type="text" autocomplete="off" placeholder="mechanics-3d"></label>
+      <label>Publishing branch<input id="githubBranch" type="text" placeholder="Default branch" autocomplete="off"></label>
+      <label>GitHub token<input id="githubToken" type="password" autocomplete="off" spellcheck="false" placeholder="Paste your fine-grained token"></label>
+    </section>
+    <details id="tokenInstructions"><summary>One-time token setup</summary><ol>
+      <li>Open <a href="https://github.com/settings/personal-access-tokens/new" target="_blank" rel="noopener noreferrer">GitHub → create a fine-grained token</a>.</li>
+      <li>Select the repository owner as resource owner and give it access to <b>only this repository</b>.</li>
+      <li>Under Repository permissions, set <b>Contents → Read and write</b>. Choose an expiration and generate the token.</li>
+      <li>Paste it here and click Connect. The token is cleared from this field and kept only in memory until you disconnect or close/reload the page.</li>
+    </ol><p>Use the branch configured in Settings → Pages. Direct writes require a branch that permits your account to commit.</p></details>
+    <div class="publish-actions"><button id="githubConnectBtn">Connect</button><button id="githubDisconnectBtn" disabled>Disconnect</button><button id="libraryRefreshBtn" disabled>Refresh library</button></div>
+    <p id="libraryStatus" role="status">Not connected.</p>
+    <label>Find a model<input id="librarySearch" type="search" placeholder="Search title or ID"></label>
+    <div id="libraryList" class="library-list"><p class="empty">Connect to load published problems.</p></div>
+    <p class="help">After publishing or removing, GitHub Pages needs time to update the public viewer. Removed files can be restored using repository history.</p>
+  </dialog>
+  <dialog id="removeDialog" class="remove-dialog">
+    <h2>Remove problem</h2><p id="removePrompt"></p>
+    <label class="check-row"><input id="removeFiles" type="checkbox">Also delete its GLB, annotations, and QR files</label>
+    <p class="help">Unchecked: hide it from the gallery and keep its QR link working. Checked: remove its files too; printed QR links will stop working after deployment.</p>
+    <div class="publish-actions"><button id="cancelRemoveBtn">Cancel</button><button id="confirmRemoveBtn" class="danger">Remove</button></div>
+  </dialog>
   <script src="vendor/qrcode.js"></script>
   <script src="vendor/jszip.min.js"></script>
   <script type="module" src="editor.js"></script>

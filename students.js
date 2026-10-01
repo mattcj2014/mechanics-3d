@@ -12,5 +12,5 @@ function render(){
   status.textContent=filtered.length?`${filtered.length} example${filtered.length===1?'':'s'}`:'No matching problems.';
 }
 search.addEventListener('input',render);
-try {const r=await fetch('catalog.json',{cache:'no-store'});if(!r.ok)throw new Error('Could not load the problem catalog.');const data=await r.json();if(!Array.isArray(data.problems))throw new Error('Invalid catalog.');problems=data.problems;render();}
+try {const r=await fetch('catalog.json',{cache:'no-store'});if(!r.ok&&r.status!==404)throw new Error('Could not load the problem catalog.');const data=r.status===404?{problems:[]}:await r.json();if(!Array.isArray(data.problems))throw new Error('Invalid catalog.');problems=data.problems.filter(p=>!p.hidden);render();}
 catch(e){status.textContent=e.message;}
