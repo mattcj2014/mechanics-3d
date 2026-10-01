@@ -16,7 +16,7 @@
       "id": "3-23",
       "title": "3.23",
       "project": "projects/3-23/problem.annotations.json",
-      "hidden": false
+      "hidden": true
     }
   ]
 }
