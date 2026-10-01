@@ -11,6 +11,12 @@
       "title": "Cable-Supported Cantilever Beam",
       "project": "projects/cablebeam/problem.annotations.json",
       "hidden": false
+    },
+    {
+      "id": "3-23",
+      "title": "Problem 3.23",
+      "project": "projects/3-23/problem.annotations.json",
+      "hidden": false
     }
   ]
 }

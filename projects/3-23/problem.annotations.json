@@ -1,0 +1,52 @@
+{
+  "version": 1,
+  "model": "model.glb",
+  "settings": {
+    "displayScale": 1,
+    "unit": "m"
+  },
+  "title": "Problem 3.23",
+  "annotations": [
+    {
+      "id": "label1",
+      "type": "label",
+      "text": "200 N",
+      "position": [
+        0.04232457,
+        0.05695122,
+        -0.01158351
+      ]
+    },
+    {
+      "id": "label2",
+      "type": "label",
+      "text": "C",
+      "position": [
+        0.04201233,
+        0.03465057,
+        0.0002485
+      ]
+    },
+    {
+      "id": "label3",
+      "type": "label",
+      "text": "B",
+      "position": [
+        0.01170398,
+        0.02023562,
+        0.00008107
+      ]
+    },
+    {
+      "id": "label4",
+      "type": "label",
+      "text": "A",
+      "position": [
+        0.01169573,
+        -0.00978625,
+        0.00012676
+      ]
+    }
+  ],
+  "publicationId": "532c2c4b-9a20-4dcc-b903-54bb35d33f8a"
+}
