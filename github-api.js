@@ -25,7 +25,9 @@ export class GitHubRepository {
   constructor({token,owner,repo,branch,fetchImpl=fetch}){
     if(!token?.trim())throw new Error('Enter a GitHub token.');
     if(!/^[a-zA-Z0-9-]+$/.test(owner)||!/^[a-zA-Z0-9_.-]+$/.test(repo))throw new Error('Enter a valid GitHub owner and repository name.');
-    this.#token=token.trim();this.#root=`/repos/${encodeURIComponent(owner)}/${encodeURIComponent(repo)}`;this.#branch=branch?.trim();this.#fetch=fetchImpl;
+    this.#token=token.trim();this.#root=`/repos/${encodeURIComponent(owner)}/${encodeURIComponent(repo)}`;this.#branch=branch?.trim();
+    // Browser fetch requires the Window receiver, even when called from this class.
+    this.#fetch=fetchImpl.bind(globalThis);
     this.owner=owner;this.repo=repo;
   }
   get branch(){return this.#branch;}
