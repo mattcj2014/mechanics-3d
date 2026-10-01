@@ -8,8 +8,9 @@
     },
     {
       "id": "cablebeam",
-      "title": "cable-suppported-cantilever-beam",
-      "project": "projects/cablebeam/problem.annotations.json"
+      "title": "Cable-Supported Cantilever Beam",
+      "project": "projects/cablebeam/problem.annotations.json",
+      "hidden": false
     }
   ]
 }

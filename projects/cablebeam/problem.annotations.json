@@ -5,7 +5,7 @@
     "displayScale": 0.5,
     "unit": "units"
   },
-  "title": "cable-suppported-cantilever-beam",
+  "title": "Cable-Supported Cantilever Beam",
   "annotations": [
     {
       "id": "label1",
@@ -28,25 +28,6 @@
       ]
     },
     {
-      "id": "dim3",
-      "type": "dimension",
-      "points": [
-        [
-          0.0002662,
-          0.03113232,
-          0.98169316
-        ],
-        [
-          0.60163649,
-          0.50592335,
-          0
-        ]
-      ],
-      "rawDistance": 1.2453088806613124,
-      "autoText": false,
-      "text": "(Length)"
-    },
-    {
       "id": "label4",
       "type": "label",
       "text": "(0, -1, 2)",
@@ -65,25 +46,6 @@
         0.51308609,
         0
       ]
-    },
-    {
-      "id": "dim6",
-      "type": "dimension",
-      "points": [
-        [
-          -0.50862469,
-          0.372123,
-          0.08258621
-        ],
-        [
-          -0.04639366,
-          0.04145211,
-          0.94259826
-        ]
-      ],
-      "rawDistance": 1.03083533541175,
-      "autoText": false,
-      "text": "(Length)"
     },
     {
       "id": "vec7",
@@ -120,23 +82,6 @@
       "text": "Y"
     },
     {
-      "id": "vec10",
-      "type": "vector",
-      "points": [
-        [
-          0.02249033,
-          -0.0104728,
-          0.01630573
-        ],
-        [
-          0.02330256,
-          -0.0085119,
-          0.9626826
-        ]
-      ],
-      "text": "X"
-    },
-    {
       "id": "vec11",
       "type": "vector",
       "points": [
@@ -152,6 +97,24 @@
         ]
       ],
       "text": "Z"
+    },
+    {
+      "id": "vec12",
+      "type": "vector",
+      "points": [
+        [
+          0.02489975,
+          0.00076151,
+          0.04300672
+        ],
+        [
+          0.0247541,
+          -0.00186776,
+          0.52037371
+        ]
+      ],
+      "text": "X"
     }
-  ]
+  ],
+  "publicationId": "a51baa5f-c45f-4bc0-8d42-edf33112b419"
 }
