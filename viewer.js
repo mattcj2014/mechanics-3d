@@ -1,3 +1,4 @@
+import { loadValidatedGLB } from './glb-validation.js';
 import { loadPreview } from './project-store.js';
 import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
@@ -39,7 +40,7 @@ async function init(){
       data = await r.json();
       modelUrl = new URL(data.model, new URL(project,location.href)).href;
     }
-    model = await new GLTFLoader().loadAsync(modelUrl).then(g=>g.scene);
+    model = await loadValidatedGLB(new GLTFLoader(),modelUrl).then(g=>g.scene);
     scene.add(model); build(data.annotations);
     document.getElementById('title').textContent = (q.has('preview')?'Preview · ':'') + (data.title||data.model||'Mechanics 3D');
     fit(); msg.textContent = 'Drag to rotate • scroll/pinch to zoom';

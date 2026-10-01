@@ -18,11 +18,12 @@
   <header class="topbar">
     <div>
       <h1>Mechanics 3D Labeller</h1>
-      <p>Load → annotate → preview → download a publishing pack and QR code.</p>
+      <p>Load STEP or GLB → annotate → publish → share a QR code.</p>
     </div>
     <div class="top-actions">
-      <label class="file-btn">Load GLB<input id="glbInput" type="file" accept=".glb,model/gltf-binary" /></label>
+      <label class="file-btn">Load Model<input id="glbInput" type="file" accept=".glb,.step,.stp,model/gltf-binary" /></label>
       <label class="file-btn secondary">Import JSON<input id="jsonInput" type="file" accept=".json,application/json" /></label>
+      <button id="downloadGlbBtn" disabled>Download GLB</button>
       <button id="exportBtn" disabled>Export JSON</button>
       <button id="previewBtn" disabled>Preview Viewer</button>
       <button id="openLibraryBtn">Manage Models / Connect GitHub</button>
@@ -45,6 +46,8 @@
 
       <section>
         <h2>2. Dimension settings</h2>
+        <label>STEP import detail<select id="stepQuality"><option value="coarse">Coarse — faster</option><option value="standard" selected>Standard</option><option value="fine">Fine — smoother curves</option></select></label>
+        <p class="help">STEP AP214 imports body and face colors. STEP dimensions start in meters. Choose detail before loading the file.</p>
         <label>Display multiplier
           <input id="scaleInput" type="number" step="any" value="1" />
         </label>
@@ -65,7 +68,7 @@
     <section class="viewport-wrap">
       <div id="viewport"></div>
       <div id="emptyState" class="empty-state">
-        <strong>Load a .glb file to begin</strong>
+        <strong>Load a .step, .stp, or .glb file to begin</strong>
         <span>Then choose Label, Length, or Vector and click on the model.</span>
       </div>
       <div id="status" class="status">Ready.</div>

@@ -1,10 +1,24 @@
-# Mechanics 3D v5 — publish and manage models from the app
+# Mechanics 3D v6 — colored STEP AP214 loading and direct publishing
 
 ## Install this update once
 
 Extract the app ZIP and upload its contents to the ROOT of your existing GitHub Pages repository, replacing the older app files. Keep `catalog.json` and all existing `projects/` folders. This update ZIP deliberately omits your model library so installing it will not overwrite finished problems.
 
 Wait for deployment, refresh the editor, and look for **Manage Models / Connect GitHub**. You only install this app update manually once. After that, finished problems can be published, edited, hidden, restored, and deleted directly in the app.
+
+## Load a SolidWorks STEP AP214 model
+
+1. In SolidWorks, use File → Save As → STEP, then Options → AP214 to include body and face colors.
+2. In the editor, click **Load Model** and select the `.step` or `.stp` file.
+3. Wait for browser conversion. A background worker reads and tessellates the CAD geometry, preserves imported body and face colors, and creates a self-contained GLB. Conversion stays in your browser.
+4. Add annotations, preview, and publish using the existing workflow. The published file is the converted GLB, so students need no CAD software or STEP converter.
+5. **Download GLB** saves the converted colored model if you want a copy.
+
+STEP units are normalized to meters. The dimension multiplier is reset to 1 and the unit to m on STEP import. To show millimeters, set multiplier 1000 and unit mm. STEP import detail defaults to Standard; choose Coarse for faster processing or Fine for smoother curves BEFORE loading. Geometry is tessellated, so dimension picking is based on the displayed surface mesh.
+
+STEP AP214 carries solid body/face colors. CAD appearance textures and finish parameters are not preserved by this importer. Files without exported color data receive a neutral default. Existing GLBs continue to work. Original STEP CAD data is not stored in the published GLB.
+
+The update includes the converter script and 7.3 MiB WASM file under vendor/occt/. Upload that entire folder. Modern Chrome/Edge is recommended. STEP files over 50 MiB should be simplified before browser import.
 
 ## Connect your repository
 
@@ -19,7 +33,7 @@ Your account and token must be permitted to commit directly to the selected bran
 
 ## Create a new problem
 
-1. **Load GLB** and place Label, Length, or Vector annotations. Adjust dimension units if needed.
+1. **Load Model** and place Label, Length, or Vector annotations. Adjust dimension units if needed.
 2. **Preview Viewer** opens a separate student viewer tab; this private preview is only available in your current browser.
 3. Enter a title and unique problem ID under **Publish & QR code**. Confirm the **Published site address**, including the repository folder.
 4. Click **Publish to GitHub**. The app uploads the GLB, annotations, PNG/SVG QR images, and student catalog in one commit.
@@ -62,7 +76,7 @@ Old viewer links still work. Editing an existing problem preserves its annotatio
 
 ## Dependencies and verification
 
-QR generator and ZIP libraries are bundled. Three.js 0.186.1 loads from jsDelivr. Modern Chrome/Edge is recommended for the editor. The student viewer supports touch and mouse controls.
+QR generator, ZIP libraries, and occt-import-js 0.0.23 are bundled. Three.js 0.186.1 loads from jsDelivr. Modern Chrome/Edge is recommended for the editor. The student viewer supports touch and mouse controls.
 
 Automated checks cover QR/link construction, in-app connect/publish/edit/hide/restore/delete, byte-preserving model uploads, concurrent catalog updates, stale edit rejection, protected branch failures, secret clearing, and shared/unrelated-file preservation using a simulated GitHub API and DOM. A live authenticated GitHub deployment and full browser rendering were not tested in this environment.
 
@@ -73,4 +87,6 @@ https://docs.github.com/en/rest/git/commits
 https://docs.github.com/en/rest/git/refs
 https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens
 
-Bundled qrcode-generator 1.4.4 (MIT) and JSZip 3.10.1 (MIT). License files are in vendor/. Three.js is MIT licensed.
+Bundled qrcode-generator 1.4.4 (MIT), JSZip 3.10.1 (MIT), and occt-import-js/OpenCascade (LGPL-2.1; supplied license notices apply). License files are in vendor/. Three.js is MIT licensed.
+
+STEP verification used the actual bundled WASM importer on body/face-colored STEP fixtures and an assembly. Tests confirm RGB material factors survive GLB export/import, and models defined in mm, inches, and meters normalize correctly to meters. Worker conversion was exercised with a Node worker adapter. Full browser rendering and your SolidWorks STEP file still need live testing.

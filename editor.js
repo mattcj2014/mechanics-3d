@@ -1,5 +1,7 @@
+import { convertStepFile } from './step-import.js';
+import { validateGlb } from './glb-validation.js';
 import { setupGitHub } from './github-ui.js';
-import { setupPublishing } from './publishing.js';
+import { setupPublishing, downloadBlob } from './publishing.js';
 import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
@@ -40,6 +42,7 @@ let selectedId = null;
 let annotations = [];
 let nextId = 1;
 let pointerDown = null;
+let modelLoading = false;
 
 const scene = new THREE.Scene();
 scene.background = new THREE.Color(0xe9edf1);
@@ -105,15 +108,16 @@ function animate() {
 animate();
 
 function disposeModel() {
-  if (!modelRoot) return;
-  scene.remove(modelRoot);
-  modelRoot.traverse(obj => {
-    if (obj.geometry) obj.geometry.dispose?.();
-    if (obj.material) {
-      const mats = Array.isArray(obj.material) ? obj.material : [obj.material];
-      mats.forEach(m => m.dispose?.());
-    }
-  });
+  if (modelRoot) {
+    scene.remove(modelRoot);
+    modelRoot.traverse(obj => {
+      if (obj.geometry) obj.geometry.dispose?.();
+      if (obj.material) {
+        const mats = Array.isArray(obj.material) ? obj.material : [obj.material];
+        mats.forEach(m => m.dispose?.());
+      }
+    });
+  }
   modelRoot = null;
   if (modelURL) URL.revokeObjectURL(modelURL);
   modelURL = null;
@@ -139,8 +143,13 @@ function fitModel() {
 
 async function loadGLBFile(file) {
   if (!file) return;
+  if(modelLoading){setStatus('Wait for the current model import to finish.');return false;}
+  modelLoading=true;glbInput.disabled=true;$('downloadGlbBtn').disabled=true;
   exportBtn.disabled = true; previewBtn.disabled = true;
   disposeModel();
+  publisher.invalidate();
+  $('makeQrBtn').disabled = true;
+  document.dispatchEvent(new Event('mechanics-model-change'));
   annotations = [];
   selectedId = null;
   clearPending();
@@ -152,7 +161,11 @@ async function loadGLBFile(file) {
   modelURL = URL.createObjectURL(file);
   setStatus(`Loading ${file.name}...`);
   try {
-    const gltf = await gltfLoader.loadAsync(modelURL);
+    const wasStep=/\.(step|stp)$/i.test(file.name);
+    if(wasStep){file=await convertStepFile(file,{quality:$('stepQuality').value,progress:setStatus});modelFile=file;modelFileName=file.name;unitInput.value='m';scaleInput.value=1;}
+    const bytes = await file.arrayBuffer();
+    validateGlb(bytes);
+    const gltf = await gltfLoader.parseAsync(bytes, '');
     modelRoot = gltf.scene;
     scene.add(modelRoot);
     emptyState.classList.add('hidden');
@@ -161,16 +174,22 @@ async function loadGLBFile(file) {
     fitBtn.disabled = false;
     fitModel();
     publisher.modelLoaded(file);
-    setStatus(`Loaded ${file.name}. Choose a tool and click the model.`);
+    $('downloadGlbBtn').disabled=false;
+    setStatus(wasStep?`STEP imported with colors. Dimensions are in meters. Choose a tool to annotate.`:`Loaded ${file.name}. Choose a tool and click the model.`);
     return true;
   } catch (err) {
+    exportBtn.disabled = true; previewBtn.disabled = true; fitBtn.disabled = true;
+    disposeModel();
+    document.dispatchEvent(new Event('mechanics-model-change'));
+    emptyState.classList.remove('hidden');
     console.error(err);
-    setStatus(`Could not load GLB: ${err.message}`);
+    setStatus(`Could not load model: ${err.message}`);
     return false;
-  }
+  } finally {modelLoading=false;glbInput.disabled=false;}
 }
 
-glbInput.addEventListener('change', () => loadGLBFile(glbInput.files?.[0]));
+glbInput.addEventListener('change', async () => {await loadGLBFile(glbInput.files?.[0]);glbInput.value='';});
+$('downloadGlbBtn').addEventListener('click',()=>{if(modelRoot&&modelFile)downloadBlob(modelFile,modelFile.name);});
 fitBtn.addEventListener('click', fitModel);
 clearPickBtn.addEventListener('click', () => { clearPending(); setStatus('Placement cancelled.'); });
 
