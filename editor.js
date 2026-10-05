@@ -1,7 +1,8 @@
-import { convertStepFile } from './step-import.js';
-import { validateGlb } from './glb-validation.js';
-import { setupGitHub } from './github-ui.js';
-import { setupPublishing, downloadBlob } from './publishing.js';
+import { renderAnnotations, labelStyle, DEFAULT_STYLE } from './annotation-renderer.js?v=7';
+import { convertStepFile } from './step-import.js?v=7';
+import { validateGlb } from './glb-validation.js?v=7';
+import { setupGitHub } from './github-ui.js?v=7';
+import { setupPublishing, downloadBlob } from './publishing.js?v=7';
 import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
@@ -43,6 +44,7 @@ let annotations = [];
 let nextId = 1;
 let pointerDown = null;
 let modelLoading = false;
+let repositionId = null;
 
 const scene = new THREE.Scene();
 scene.background = new THREE.Color(0xe9edf1);
@@ -197,7 +199,8 @@ const helpByMode = {
   select: 'Orbit the model. Click an existing annotation to edit it.',
   label: 'Click one point on the model. A screen-facing label will be created there.',
   dimension: 'Click endpoint 1, then endpoint 2. The measured length is calculated automatically.',
-  vector: 'Click the vector tail, then the arrow head. Edit its label afterward.'
+  vector: 'Click the vector tail, then the arrow head. Edit its label afterward.',
+  origin: 'Click the model to place the origin. Flip or rotate its X/Y/Z axes in the right panel.'
 };
 
 document.querySelectorAll('.tool').forEach(btn => {
@@ -234,7 +237,7 @@ renderer.domElement.addEventListener('pointercancel', () => { pointerDown = null
 renderer.domElement.addEventListener('pointerup', (ev) => {
   const start = pointerDown;
   pointerDown = null;
-  if (!start || start.pointerId !== ev.pointerId || !modelRoot || mode === 'select') return;
+  if (!start || start.pointerId !== ev.pointerId || !modelRoot || (mode === 'select' && !repositionId)) return;
   const d = Math.max(start.maxMove, Math.hypot(ev.clientX - start.x, ev.clientY - start.y));
   if (d > 5) return; // a drag must never place an annotation, even if it ends near its start
   const p = eventToModelPoint(ev);
@@ -250,15 +253,22 @@ function addPickDot(point) {
   pickGroup.add(obj);
 }
 function clearPending() {
+  repositionId = null;
   pendingPoints = [];
   while (pickGroup.children.length) pickGroup.remove(pickGroup.children[0]);
   clearPickBtn.disabled = true;
 }
 
 function handlePlacementPoint(p) {
+  if(repositionId){const a=annotations.find(a=>a.id===repositionId);if(a)a.position=vecToArr(p);clearPending();refreshEditor();rebuildHelpers();setStatus('Annotation moved.');return;}
+  if(mode==='origin'){
+    const size=new THREE.Box3().setFromObject(modelRoot).getSize(new THREE.Vector3());
+    const a={id:uniqueId('origin'),type:'origin',text:'O (0, 0, 0)',position:vecToArr(p),axisLength:Math.max(size.x,size.y,size.z)*.2||1,rotation:[0,0,0],flips:[false,false,false],style:{...DEFAULT_STYLE}};
+    annotations.push(a);selectAnnotation(a.id);setStatus('Origin placed. Adjust axis length, rotation, or Flip X/Y/Z in the right panel.');return;
+  }
   if (mode === 'label') {
     const n = annotations.filter(a => a.type === 'label').length + 1;
-    const a = { id: uniqueId('label'), type:'label', text:`Label ${n}`, position:vecToArr(p) };
+    const a = { id: uniqueId('label'), type:'label', text:`Label ${n}`, position:vecToArr(p), style:{...DEFAULT_STYLE} };
     annotations.push(a); selectAnnotation(a.id); rebuildHelpers(); refreshList();
     setStatus('Label created. Edit its text in the right panel, or click another point.');
     return;
@@ -275,7 +285,7 @@ function handlePlacementPoint(p) {
       const raw = distance(pendingPoints[0], pendingPoints[1]);
       const a = {
         id: uniqueId('dim'), type:'dimension', points:[...pendingPoints],
-        rawDistance: raw, autoText:true, text:formatDimension(raw)
+        rawDistance: raw, autoText:true, text:formatDimension(raw), style:{...DEFAULT_STYLE}
       };
       annotations.push(a); clearPending(); selectAnnotation(a.id); rebuildHelpers(); refreshList();
       setStatus('Length created. You can keep the measured value or replace the text.');
@@ -285,7 +295,7 @@ function handlePlacementPoint(p) {
       setStatus('Vector: tail saved. Click the arrow head.');
     } else if (pendingPoints.length === 2) {
       const n = annotations.filter(a => a.type === 'vector').length + 1;
-      const a = { id:uniqueId('vec'), type:'vector', points:[...pendingPoints], text:`F${n}` };
+      const a = { id:uniqueId('vec'), type:'vector', points:[...pendingPoints], text:`F${n}`, style:{...DEFAULT_STYLE} };
       annotations.push(a); clearPending(); selectAnnotation(a.id); rebuildHelpers(); refreshList();
       setStatus('Vector created. Edit its label in the right panel.');
     }
@@ -315,65 +325,8 @@ function updateAutoDimensions() {
 scaleInput.addEventListener('input', updateAutoDimensions);
 unitInput.addEventListener('input', updateAutoDimensions);
 
-function makeLabelObject(annotation, position, className='') {
-  const outer = document.createElement('div');
-  outer.className = `annotation-label ${className}${annotation.id === selectedId ? ' selected' : ''}`;
-  outer.dataset.id = annotation.id;
-  const bubble = document.createElement('div');
-  bubble.className = 'bubble';
-  bubble.textContent = annotation.text || '(blank)';
-  outer.appendChild(bubble);
-  outer.addEventListener('pointerdown', ev => ev.stopPropagation());
-  outer.addEventListener('click', ev => { ev.stopPropagation(); selectAnnotation(annotation.id); });
-  const obj = new CSS2DObject(outer);
-  obj.position.copy(position);
-  return obj;
-}
-
-function makeLine(a,b,color=0x20252b) {
-  const geometry = new THREE.BufferGeometry().setFromPoints([a,b]);
-  const material = new THREE.LineBasicMaterial({color, depthTest:false, transparent:true, opacity:.9});
-  const line = new THREE.Line(geometry, material);
-  line.renderOrder = 100;
-  return line;
-}
-
 function rebuildHelpers() {
-  while (helperGroup.children.length) {
-    const c = helperGroup.children[0];
-    // CSS2DObject removes its DOM element when Three.js emits "removed".
-    // Mutating children directly skips that event and leaves old labels visible.
-    helperGroup.remove(c);
-    c.traverse(obj => {
-      if (obj.isCSS2DObject) obj.element.remove();
-      obj.geometry?.dispose?.();
-      if (obj.material) {
-        const materials = Array.isArray(obj.material) ? obj.material : [obj.material];
-        materials.forEach(material => material.dispose?.());
-      }
-    });
-  }
-  for (const a of annotations) {
-    if (a.type === 'label') {
-      helperGroup.add(makeLabelObject(a, arrToVec(a.position), 'label'));
-    } else if (a.type === 'dimension') {
-      const p1 = arrToVec(a.points[0]), p2 = arrToVec(a.points[1]);
-      helperGroup.add(makeLine(p1,p2,0x222222));
-      helperGroup.add(makeLabelObject(a, p1.clone().add(p2).multiplyScalar(.5), 'dimension'));
-    } else if (a.type === 'vector') {
-      const p1 = arrToVec(a.points[0]), p2 = arrToVec(a.points[1]);
-      const dir = p2.clone().sub(p1);
-      const len = dir.length();
-      if (len > 0) {
-        const arrow = new THREE.ArrowHelper(dir.clone().normalize(), p1, len, 0xc62828, Math.min(len*.18, len*.4), Math.min(len*.08, len*.18));
-        arrow.line.material.depthTest = false;
-        arrow.cone.material.depthTest = false;
-        arrow.renderOrder = 100;
-        helperGroup.add(arrow);
-      }
-      helperGroup.add(makeLabelObject(a, p1.clone().add(p2).multiplyScalar(.5), 'vector'));
-    }
-  }
+  renderAnnotations(helperGroup,annotations,{selectedId,onSelect:selectAnnotation});
 }
 
 function refreshList() {
@@ -392,6 +345,7 @@ function refreshList() {
 }
 
 function selectAnnotation(id) {
+  clearPending();
   selectedId = id;
   refreshList(); refreshEditor(); rebuildHelpers();
 }
@@ -405,6 +359,16 @@ function refreshEditor() {
   noSelection.classList.add('hidden'); editForm.classList.remove('hidden');
   typeField.value = a.type;
   textField.value = a.text ?? '';
+  const style=labelStyle(a);
+  for(const id of ['fontSize','fontFamily','color','background','borderColor','appearance'])$('style'+id[0].toUpperCase()+id.slice(1)).value=style[id];
+  $('styleBold').checked=!!style.bold;$('styleItalic').checked=!!style.italic;
+  $('originControls').classList.toggle('hidden',a.type!=='origin');
+  $('repositionBtn').classList.toggle('hidden',!['origin','label'].includes(a.type));
+  if(a.type==='origin'){
+    $('axisLength').value=a.axisLength;
+    ['X','Y','Z'].forEach((axis,i)=>{$('rotate'+axis).value=a.rotation?.[i]||0;$('flip'+axis).checked=!!a.flips?.[i]});
+    $('originPosition').textContent='Model point: '+a.position.map(formatNumber).join(', ');
+  }
   if (a.type === 'dimension') {
     autoRow.classList.remove('hidden'); measurementBox.classList.remove('hidden');
     autoTextField.checked = a.autoText !== false;
@@ -417,6 +381,18 @@ function refreshEditor() {
   }
 }
 
+editForm.addEventListener('submit',e=>e.preventDefault());
+for(const key of ['fontSize','fontFamily','color','background','borderColor','appearance','bold','italic']){
+  const input=$('style'+key[0].toUpperCase()+key.slice(1));
+  input.addEventListener('input',()=>{const a=currentAnnotation();if(!a)return;a.style=labelStyle(a);a.style[key]=input.type==='checkbox'?input.checked:input.type==='number'?Number(input.value):input.value;rebuildHelpers();});
+}
+for(const [i,axis] of ['X','Y','Z'].entries()){
+  $('flip'+axis).addEventListener('change',()=>{const a=currentAnnotation();if(a?.type!=='origin')return;a.flips??=[false,false,false];a.flips[i]=$('flip'+axis).checked;rebuildHelpers();});
+  $('rotate'+axis).addEventListener('input',()=>{const a=currentAnnotation();if(a?.type!=='origin')return;a.rotation??=[0,0,0];a.rotation[i]=Number($('rotate'+axis).value)||0;rebuildHelpers();});
+}
+$('axisLength').addEventListener('input',()=>{const a=currentAnnotation(),len=Number($('axisLength').value);if(a?.type==='origin'&&len>0&&Number.isFinite(len)){a.axisLength=len;rebuildHelpers();}});
+$('resetAxesBtn').addEventListener('click',()=>{const a=currentAnnotation();if(a?.type==='origin'){a.rotation=[0,0,0];a.flips=[false,false,false];refreshEditor();rebuildHelpers();}});
+$('repositionBtn').addEventListener('click',()=>{const a=currentAnnotation();if(!a)return;clearPending();repositionId=a.id;clearPickBtn.disabled=false;setStatus('Click a new point on the model to move this annotation.');});
 textField.addEventListener('input', () => {
   const a = currentAnnotation(); if (!a) return;
   a.text = textField.value;
@@ -465,6 +441,7 @@ exitPreviewBtn.addEventListener('click', () => {
 });
 
 function applyAnnotations(data) {
+  clearPending();
   if (!Array.isArray(data.annotations)) throw new Error('JSON does not contain an annotations array.');
   annotations = structuredClone(data.annotations);
   $('problemTitle').value = data.title || '';
@@ -491,4 +468,18 @@ setupGitHub({publisher,getFile:()=>modelRoot?modelFile:null,getPayload:projectPa
     applyAnnotations(data);publisher.usePublishedProject(entry);
     setStatus(`Editing ${entry.title}. Publish to update its existing student link.`);
   }
+});
+
+$('loadDemoBtn').addEventListener('click',async()=>{
+  if(modelLoading)return;
+  if(modelRoot&&!window.confirm('Load the demo? Unsaved annotations in this editor will be replaced.'))return;
+  try{
+    const response=await fetch('projects/demo/demo.glb',{cache:'no-store'});
+    if(!response.ok)throw new Error('Demo is available in the local test folder. Load your own model here.');
+    const file=new File([await response.arrayBuffer()],'demo.glb',{type:'model/gltf-binary'});
+    const annotationsResponse=await fetch('projects/demo/demo.annotations.json',{cache:'no-store'});
+    if(!annotationsResponse.ok)throw new Error('Demo annotations are missing.');
+    const data=await annotationsResponse.json();
+    if(await loadGLBFile(file)){applyAnnotations(data);setStatus('Demo loaded. Select an annotation to change its appearance, or select Origin and click the beam.');}
+  }catch(e){setStatus(e.message);}
 });

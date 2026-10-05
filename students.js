@@ -1,3 +1,4 @@
+import { freshUrl } from './model-assets.js?v=7';
 const list=document.getElementById('problems'),status=document.getElementById('status'),search=document.getElementById('search');
 let problems=[];
 function render(){
@@ -12,5 +13,5 @@ function render(){
   status.textContent=filtered.length?`${filtered.length} example${filtered.length===1?'':'s'}`:'No matching problems.';
 }
 search.addEventListener('input',render);
-try {const r=await fetch('catalog.json',{cache:'no-store'});if(!r.ok&&r.status!==404)throw new Error('Could not load the problem catalog.');const data=r.status===404?{problems:[]}:await r.json();if(!Array.isArray(data.problems))throw new Error('Invalid catalog.');problems=data.problems.filter(p=>!p.hidden);render();}
+try {const r=await fetch(freshUrl('catalog.json'),{cache:'no-store'});if(!r.ok&&r.status!==404)throw new Error('Could not load the problem catalog.');const data=r.status===404?{problems:[]}:await r.json();if(!Array.isArray(data.problems))throw new Error('Invalid catalog.');problems=data.problems.filter(p=>!p.hidden);render();}
 catch(e){status.textContent=e.message;}

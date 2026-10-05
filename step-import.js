@@ -1,6 +1,6 @@
 import * as THREE from 'three';
 import { GLTFExporter } from 'three/addons/exporters/GLTFExporter.js';
-import { validateGlb } from './glb-validation.js';
+import { validateGlb } from './glb-validation.js?v=7';
 export function sceneFromStep(result){
   if(!result.success||!result.meshes?.length)throw new Error('The STEP import did not contain any meshes.');
   const materials=new Map(),geometries=[];

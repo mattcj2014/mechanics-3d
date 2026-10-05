@@ -1,4 +1,4 @@
-import { GitHubRepository } from './github-api.js';
+import { GitHubRepository } from './github-api.js?v=7';
 const $=id=>document.getElementById(id);
 export function setupGitHub({publisher,getFile,getPayload,loadProject}){
   let client=null,snapshot=null,busy=false,editing=null,removeTarget=null,published=null;
@@ -112,7 +112,15 @@ export function setupGitHub({publisher,getFile,getPayload,loadProject}){
       const viewer=new URL(published.url),url=new URL(published.entry.project,new URL('./',viewer));url.searchParams.set('_publication',published.publicationId);
       const r=await fetch(url,{cache:'no-store'});if(!r.ok)throw new Error('Not live yet. Wait for the Pages deployment, then check again.');
       const data=await r.json();if(data.publicationId!==published.publicationId)throw new Error('An earlier version is still live. Wait for the Pages deployment, then check again.');
-      publisher.setStatus('The published annotations are live. Open the viewer or scan the QR to verify the model.');
+      const modelUrl=new URL(data.model,url);modelUrl.searchParams.set('_publication',published.publicationId);
+      const modelResponse=await fetch(modelUrl,{cache:'no-store'});
+      if(!modelResponse.ok)throw new Error('Annotations are live, but the model is not available yet. Wait, then check again.');
+      if(/^model-[a-f0-9]{64}\.glb$/.test(data.model)){
+        const hash=new Uint8Array(await crypto.subtle.digest('SHA-256',await modelResponse.arrayBuffer()));
+        const expected='model-'+Array.from(hash,b=>b.toString(16).padStart(2,'0')).join('')+'.glb';
+        if(expected!==data.model)throw new Error('The live model does not match this publication yet. Wait, then check again.');
+      }
+      publisher.setStatus('The latest annotations and model are live. Open the viewer or scan the QR.');
     }catch(e){publisher.setStatus(e.message);}finally{button.disabled=false;}
   });
   $('cancelRemoveBtn').addEventListener('click',()=>{if(!busy)$('removeDialog').close();});

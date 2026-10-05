@@ -30,7 +30,7 @@ export function validateGlb(buffer){
   return {json,binaryLength};
 }
 export async function loadValidatedGLB(loader,url){
-  const response=await fetch(url);
+  const response=await fetch(url,{cache:'no-store'});
   if(!response.ok)throw new Error(`Could not load the model file (HTTP ${response.status}). Check that the GLB is published beside its annotation JSON.`);
   const buffer=await response.arrayBuffer();validateGlb(buffer);
   const resolved=new URL(url,location.href),base=resolved.protocol==='blob:'?'':new URL('./',resolved).href;

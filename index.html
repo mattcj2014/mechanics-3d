@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Mechanics 3D Labeller</title>
-  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="styles.css?v=7" />
   <script type="importmap">
   {
     "imports": {
@@ -21,6 +21,7 @@
       <p>Load STEP or GLB → annotate → publish → share a QR code.</p>
     </div>
     <div class="top-actions">
+      <button id="loadDemoBtn">Try demo</button>
       <label class="file-btn">Load Model<input id="glbInput" type="file" accept=".glb,.step,.stp,model/gltf-binary" /></label>
       <label class="file-btn secondary">Import JSON<input id="jsonInput" type="file" accept=".json,application/json" /></label>
       <button id="downloadGlbBtn" disabled>Download GLB</button>
@@ -40,6 +41,7 @@
           <button class="tool" data-mode="label">Label</button>
           <button class="tool" data-mode="dimension">Length</button>
           <button class="tool" data-mode="vector">Vector</button>
+          <button class="tool" data-mode="origin">Origin X/Y/Z</button>
         </div>
         <p id="modeHelp" class="help">Orbit the model. Click an existing annotation to edit it.</p>
       </section>
@@ -69,7 +71,7 @@
       <div id="viewport"></div>
       <div id="emptyState" class="empty-state">
         <strong>Load a .step, .stp, or .glb file to begin</strong>
-        <span>Then choose Label, Length, or Vector and click on the model.</span>
+        <span>Then choose Label, Length, Vector, or Origin and click on the model.</span>
       </div>
       <div id="status" class="status">Ready.</div>
       <div class="view-controls">
@@ -98,6 +100,25 @@
             Automatically show measured length
           </label>
           <div id="measurementBox" class="measurement hidden"></div>
+          <fieldset class="format-controls"><legend>Label appearance</legend>
+            <label>Text size (px)<input id="styleFontSize" type="number" min="8" max="72" value="16"></label>
+            <label>Font<select id="styleFontFamily"><option value="sans">Sans serif</option><option value="serif">Serif</option><option value="mono">Monospace</option></select></label>
+            <div class="style-pair"><label class="check-row"><input id="styleBold" type="checkbox" checked>Bold</label><label class="check-row"><input id="styleItalic" type="checkbox">Italic</label></div>
+            <label>Label style<select id="styleAppearance"><option value="box">Box</option><option value="pill">Pill</option><option value="plain">Text only</option></select></label>
+            <div class="color-controls"><label>Text<input id="styleColor" type="color" value="#18202a"></label><label>Background<input id="styleBackground" type="color" value="#ffffff"></label><label>Border<input id="styleBorderColor" type="color" value="#222222"></label></div>
+            <p class="help">Text stays the same screen size while you zoom. Origin axis labels keep their red, green, and blue colors.</p>
+          </fieldset>
+          <fieldset id="originControls" class="hidden"><legend>Origin axes</legend>
+            <p id="originPosition" class="help"></p>
+            <label>Axis length (model units)<input id="axisLength" type="number" min="0.00000001" step="any"></label>
+            <div class="style-pair"><label class="check-row"><input id="flipX" type="checkbox">Flip X</label><label class="check-row"><input id="flipY" type="checkbox">Flip Y</label><label class="check-row"><input id="flipZ" type="checkbox">Flip Z</label></div>
+            <label>Rotate about X (degrees)<input id="rotateX" type="number" step="1" value="0"></label>
+            <label>Rotate about Y (degrees)<input id="rotateY" type="number" step="1" value="0"></label>
+            <label>Rotate about Z (degrees)<input id="rotateZ" type="number" step="1" value="0"></label>
+            <p class="help">Arrows start along the model's axes. Rotation aligns the triad; each flip reverses one arrow. This is a visual coordinate marker and does not move the model or change dimensions.</p>
+            <button id="resetAxesBtn" type="button">Reset axis directions</button>
+          </fieldset>
+          <button id="repositionBtn" type="button">Move to another model point</button>
           <button id="deleteBtn" class="danger" type="button">Delete annotation</button>
         </form>
       </section>
@@ -126,6 +147,7 @@
         <ul class="instructions">
           <li><b>Label:</b> one click.</li>
           <li><b>Length:</b> click endpoint 1, then endpoint 2.</li>
+          <li><b>Origin:</b> one click, then rotate or flip axes.</li>
           <li><b>Vector:</b> click the tail, then the arrow head.</li>
           <li>Drag normally to rotate. A placement is only made on a click, not a drag.</li>
         </ul>
@@ -162,6 +184,6 @@
   </dialog>
   <script src="vendor/qrcode.js"></script>
   <script src="vendor/jszip.min.js"></script>
-  <script type="module" src="editor.js"></script>
+  <script type="module" src="editor.js?v=7"></script>
 </body>
 </html>

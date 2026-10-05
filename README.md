@@ -1,14 +1,14 @@
-# Mechanics 3D v6 — colored STEP AP214 loading and direct publishing
+# Mechanics 3D v7 — annotation appearance and origin axes
 
 ## Install this update once
 
-Extract the app ZIP and upload its contents to the ROOT of your existing GitHub Pages repository, replacing the older app files. Keep `catalog.json` and all existing `projects/` folders. This update ZIP deliberately omits your model library so installing it will not overwrite finished problems.
+First test using TEST_HERE (see START_HERE.md). When ready, upload the CONTENTS of UPLOAD_TO_GITHUB to the ROOT of your existing GitHub Pages repository, replacing the older app files. Do not upload the containing folder or the ZIP itself. Keep `catalog.json` and all existing `projects/` folders. The UPLOAD_TO_GITHUB folder deliberately omits your model library so installing it will not overwrite finished problems.
 
 Wait for deployment, refresh the editor, and look for **Manage Models / Connect GitHub**. You only install this app update manually once. After that, finished problems can be published, edited, hidden, restored, and deleted directly in the app.
 
 ## Load a SolidWorks STEP AP214 model
 
-1. In SolidWorks, use File → Save As → STEP, then Options → AP214 to include body and face colors.
+1. In SolidWorks, use File → Save As → STEP, then Options → AP214 and enable Export appearances to include body and face colors. A STEP can preserve only the colors actually exported.
 2. In the editor, click **Load Model** and select the `.step` or `.stp` file.
 3. Wait for browser conversion. A background worker reads and tessellates the CAD geometry, preserves imported body and face colors, and creates a self-contained GLB. Conversion stays in your browser.
 4. Add annotations, preview, and publish using the existing workflow. The published file is the converted GLB, so students need no CAD software or STEP converter.
@@ -19,6 +19,22 @@ STEP units are normalized to meters. The dimension multiplier is reset to 1 and 
 STEP AP214 carries solid body/face colors. CAD appearance textures and finish parameters are not preserved by this importer. Files without exported color data receive a neutral default. Existing GLBs continue to work. Original STEP CAD data is not stored in the published GLB.
 
 The update includes the converter script and 7.3 MiB WASM file under vendor/occt/. Upload that entire folder. Modern Chrome/Edge is recommended. STEP files over 50 MiB should be simplified before browser import.
+
+## Label appearance and origin tools
+
+Select an annotation by clicking its label or its list entry. In Edit selected, change Text size (8–72 pixels), font (sans serif/serif/monospace), Bold, Italic, text color, background color, border color, and label style (Box, Pill, Text only). Changes appear immediately and are saved with the annotation. Labels stay the same screen size when zooming. Text color also changes a force vector; border color changes a dimension line.
+
+Choose Origin X/Y/Z and click a model surface. The marker places an origin label and three arrows. X is red, Y green, and Z blue. In Origin axes, adjust axis length in model units, Flip X/Y/Z independently, and rotate about X/Y/Z in degrees (Euler XYZ order). Reset axis directions restores the original positive model axes. Move to another model point lets you reposition a label or origin with one click. Cancel Placement cancels that move.
+
+An origin is a visual coordinate marker: its clicked point is labeled O (0, 0, 0). Model point displays the original model coordinates of that point. The marker does not transform the model, change length measurements, or calculate coordinates for other points. Axis labels retain their standard colors; the origin label uses your chosen text color. Independent flips can produce a left-handed triad.
+
+Preview Viewer uses the same annotation renderer as the editor. Styles and origins survive Export JSON, Import JSON, direct publication, and publishing packs. Load the model before importing its JSON. Existing annotation JSON is still supported; the student viewer must also be updated for the new origin markers to appear.
+
+## Replacing a model with the same name
+
+Load the replacement file, use the original problem ID, and publish. You do not need to delete it first. The viewer and printed QR keep the same project address. Changed model bytes get a new GLB filename, so cached geometry cannot be mistaken for the replacement. Direct updates remove the prior model file; optional ZIP uploads may leave an unused prior model file. Full deletion removes the current referenced file and allows the same ID to be reused even if unrelated notes remain.
+
+The viewer fetches fresh annotations, and Check live status verifies that the published model is available and matches its content hash. GitHub Pages still needs to deploy each commit. An already-open student tab must be reloaded to see changes.
 
 ## Connect your repository
 
@@ -33,7 +49,7 @@ Your account and token must be permitted to commit directly to the selected bran
 
 ## Create a new problem
 
-1. **Load Model** and place Label, Length, or Vector annotations. Adjust dimension units if needed.
+1. **Load Model** and place Label, Length, Vector, or Origin annotations. Adjust dimension units if needed.
 2. **Preview Viewer** opens a separate student viewer tab; this private preview is only available in your current browser.
 3. Enter a title and unique problem ID under **Publish & QR code**. Confirm the **Published site address**, including the repository folder.
 4. Click **Publish to GitHub**. The app uploads the GLB, annotations, PNG/SVG QR images, and student catalog in one commit.
@@ -89,4 +105,6 @@ https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/m
 
 Bundled qrcode-generator 1.4.4 (MIT), JSZip 3.10.1 (MIT), and occt-import-js/OpenCascade (LGPL-2.1; supplied license notices apply). License files are in vendor/. Three.js is MIT licensed.
 
-STEP verification used the actual bundled WASM importer on body/face-colored STEP fixtures and an assembly. Tests confirm RGB material factors survive GLB export/import, and models defined in mm, inches, and meters normalize correctly to meters. Worker conversion was exercised with a Node worker adapter. Full browser rendering and your SolidWorks STEP file still need live testing.
+STEP verification used the actual bundled WASM importer on body/face-colored STEP fixtures and an assembly. Tests confirm RGB material factors survive GLB export/import, and models defined in mm, inches, and meters normalize correctly to meters. Worker conversion was exercised with a Node worker adapter. The supplied SolidWorks STEP was also checked: its seven bodies all contained the same pale-blue color, which survived conversion. Distinct colors absent from an export cannot be recovered by the viewer.
+
+V7 checks exercised the real GLB loader, DOM annotation controls and CSS2D renderer with WebGL rendering stubbed: formatting, origin flips/rotation/length/repositioning, JSON roundtrip, IndexedDB preview, legacy annotations, and label cleanup. A repository simulator verified content-addressed replacement, deletion/recreation with the same name, unrelated note retention, and fresh URL/cache policy. Full visual browser rendering, the Windows launcher, and a live GitHub deployment were not executed here; use the local test checklist before uploading.

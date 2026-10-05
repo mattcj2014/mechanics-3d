@@ -1,3 +1,4 @@
+import { modelAsset } from './model-assets.js?v=7';
 // GitHub repository writes are committed together; credentials stay in memory.
 export class GitHubError extends Error {
   constructor(message,status=0){super(message);this.name='GitHubError';this.status=status;}
@@ -94,19 +95,25 @@ export class GitHubRepository {
   async publish({entry,data,file,qrSvg,qrPng,expectedRevision=null,progress=()=>{}}){
     const folder=projectFolder(entry);safePath(entry.project);
     if(file.size>50*1024*1024)throw new Error('Direct publishing supports GLBs up to 50 MiB. Reduce this model or use another upload workflow.');
-    const payload=structuredClone(data);payload.model='model.glb';
-    const files=[{path:folder+'model.glb',bytes:new Uint8Array(await file.arrayBuffer())},{path:entry.project,bytes:new TextEncoder().encode(JSON.stringify(payload,null,2))},{path:folder+'qr.svg',bytes:new TextEncoder().encode(qrSvg)},{path:folder+'qr.png',bytes:new Uint8Array(await qrPng.arrayBuffer())}];
+    const asset=await modelAsset(file);
+    const payload=structuredClone(data);payload.model=asset.name;
+    const files=[{path:folder+asset.name,bytes:asset.bytes},{path:entry.project,bytes:new TextEncoder().encode(JSON.stringify(payload,null,2))},{path:folder+'qr.svg',bytes:new TextEncoder().encode(qrSvg)},{path:folder+'qr.png',bytes:new Uint8Array(await qrPng.arrayBuffer())}];
     const uploads=[];
     for(let i=0;i<files.length;i++){progress(`Uploading ${i+1}/${files.length}: ${files[i].path.split('/').pop()}`);uploads.push({path:files[i].path,mode:'100644',type:'blob',sha:await this.uploadBytes(files[i].bytes)});}
     progress('Saving model and library in one commit…');
     return this.commitChanges(`Publish mechanics problem: ${entry.title}`,async snapshot=>{
       const current=snapshot.catalog.problems.find(x=>x.id===entry.id),currentFile=snapshot.files.get(entry.project);
       if(expectedRevision){if(!current||current.project!==entry.project||await this.revision(snapshot,entry)!==expectedRevision)throw new Error('This problem changed since it was opened. Refresh and reopen it before updating.');}
-      else if(current||currentFile||[...snapshot.files.keys()].some(path=>path.startsWith(folder)))throw new Error('That problem ID or folder already exists. Open it with Edit or choose a new ID.');
+      else if(current||currentFile||uploads.some(file=>snapshot.files.has(file.path)))throw new Error('That problem ID or folder already exists. Open it with Edit or choose a new ID.');
       if(snapshot.catalog.problems.some(x=>x.id!==entry.id&&x.project.startsWith(folder)))throw new Error('This folder is shared by another problem. Use a separate problem folder.');
       const catalog=structuredClone(snapshot.catalog);const index=catalog.problems.findIndex(x=>x.id===entry.id);
       if(index<0)catalog.problems.push(entry);else catalog.problems[index]={...catalog.problems[index],...entry};
-      return [...uploads,{path:'catalog.json',mode:'100644',type:'blob',content:JSON.stringify(catalog,null,2)}];
+      const removals=[];
+      if(currentFile){
+        const oldData=JSON.parse(new TextDecoder().decode(await this.blob(currentFile.sha))),oldPath=modelPath(entry,oldData);
+        if(oldPath!==folder+asset.name&&oldPath.startsWith(folder)&&snapshot.files.has(oldPath))removals.push({path:oldPath,mode:'100644',type:'blob',sha:null});
+      }
+      return [...removals,...uploads,{path:'catalog.json',mode:'100644',type:'blob',content:JSON.stringify(catalog,null,2)}];
     });
   }
   async remove(entry,{deleteFiles=false,expectedRevision=null}={}){

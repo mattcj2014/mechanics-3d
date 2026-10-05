@@ -1,4 +1,5 @@
-import { savePreview } from './project-store.js';
+import { modelAsset, freshUrl } from './model-assets.js?v=7';
+import { savePreview } from './project-store.js?v=7';
 const $=id=>document.getElementById(id);
 export function downloadBlob(blob,name) {
   const url=URL.createObjectURL(blob), a=document.createElement('a');
@@ -52,17 +53,17 @@ export function setupPublishing({getFile,getPayload,previewBtn}) {
     const button=$('publishPackBtn'); button.disabled=true;
     try {
       const g=generate(),file=getFile(),data=getPayload();
-      // Use a fixed safe filename. Original names with #, ?, or spaces cannot break the URL.
-      data.model='model.glb';
+      const asset=await modelAsset(file);
+      data.model=asset.name;data.publicationId=crypto.randomUUID();
       let catalog;
-      const r=await fetch('catalog.json',{cache:'no-store'});
+      const r=await fetch(freshUrl('catalog.json'),{cache:'no-store'});
       if(!r.ok) throw new Error('Cannot load the current student catalog. Upload catalog.json from the app package first.');
       catalog=await r.json();
       if(!Array.isArray(catalog.problems))throw new Error('The student catalog is invalid.');
       const entry={id:g.id,title:data.title||g.id,project:g.project};
       catalog.problems=catalog.problems.filter(x=>x.id!==g.id); catalog.problems.push(entry);
       const zip=new window.JSZip();
-      zip.file(`${g.project.slice(0,g.project.lastIndexOf('/')+1)}model.glb`,await file.arrayBuffer());
+      zip.file(`${g.project.slice(0,g.project.lastIndexOf('/')+1)}${asset.name}`,asset.bytes);
       zip.file(g.project,JSON.stringify(data,null,2));
       zip.file('catalog.json',JSON.stringify(catalog,null,2));
       zip.file(`${g.project.slice(0,g.project.lastIndexOf('/')+1)}qr.svg`,g.svg);
