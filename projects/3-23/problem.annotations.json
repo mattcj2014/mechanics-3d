@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "model": "model.glb",
+  "model": "model-32a06aa3e9a5d6cdbc6e758b17552c5bff363368a6ad414933d6166f881bba5b.glb",
   "settings": {
     "displayScale": 1,
     "unit": "m"
@@ -28,16 +28,6 @@
       ]
     },
     {
-      "id": "label3",
-      "type": "label",
-      "text": "B",
-      "position": [
-        0.01170398,
-        0.02023562,
-        0.00008107
-      ]
-    },
-    {
       "id": "label4",
       "type": "label",
       "text": "A",
@@ -48,56 +38,36 @@
       ]
     },
     {
-      "id": "vec5",
-      "type": "vector",
-      "points": [
-        [
-          0.01018968,
-          0.02010864,
-          0.00022422
-        ],
-        [
-          0.0605,
-          0.0200078,
-          -0.00004723
-        ]
+      "id": "origin8",
+      "type": "origin",
+      "text": "B",
+      "position": [
+        0.01,
+        0.01891879,
+        -0.0004528
       ],
-      "text": "X"
-    },
-    {
-      "id": "vec6",
-      "type": "vector",
-      "points": [
-        [
-          0.01048731,
-          0.0199608,
-          0.00024524
-        ],
-        [
-          0.01,
-          0.0482422,
-          0.0000487
-        ]
+      "axisLength": 0.05,
+      "rotation": [
+        0,
+        0,
+        0
       ],
-      "text": "Y"
-    },
-    {
-      "id": "vec7",
-      "type": "vector",
-      "points": [
-        [
-          0.0101797,
-          0.019995,
-          0.00024939
-        ],
-        [
-          0.01,
-          0.01898212,
-          0.02205229
-        ]
+      "flips": [
+        false,
+        false,
+        false
       ],
-      "text": "Z"
+      "style": {
+        "fontSize": 14,
+        "fontFamily": "sans",
+        "bold": true,
+        "italic": false,
+        "color": "#18202a",
+        "background": "#ffffff",
+        "borderColor": "#222222",
+        "appearance": "box"
+      }
     }
   ],
-  "publicationId": "49959646-07f9-4f72-ac5a-5647063b50e4"
+  "publicationId": "2c77b625-fd69-4379-a7a9-2992db279ae0"
 }
