@@ -1,22 +1,12 @@
 {
   "version": 1,
-  "model": "model.glb",
+  "model": "model-1b63c00b3ae67eddc41c5deccd371875e63234b065219c5367d6efb75fdc1ecc.glb",
   "settings": {
     "displayScale": 0.5,
     "unit": "units"
   },
   "title": "Cable-Supported Cantilever Beam",
   "annotations": [
-    {
-      "id": "label1",
-      "type": "label",
-      "text": "(0, 0, 0)",
-      "position": [
-        0.00067675,
-        0.0249109,
-        0.01844584
-      ]
-    },
     {
       "id": "label2",
       "type": "label",
@@ -65,56 +55,36 @@
       "text": "F1 = 5000N"
     },
     {
-      "id": "vec9",
-      "type": "vector",
-      "points": [
-        [
-          0.02350533,
-          -0.00802237,
-          0.00141501
-        ],
-        [
-          0.6523753,
-          0.01087461,
-          0
-        ]
+      "id": "origin13",
+      "type": "origin",
+      "text": "O (0, 0, 0)",
+      "position": [
+        -0.00553768,
+        0.03113162,
+        0
       ],
-      "text": "Y"
-    },
-    {
-      "id": "vec11",
-      "type": "vector",
-      "points": [
-        [
-          -0.0150449,
-          -0.01969786,
-          0.01223047
-        ],
-        [
-          0.00016108,
-          0.5769278,
-          0
-        ]
+      "axisLength": 0.2623347282409668,
+      "rotation": [
+        90,
+        0,
+        90
       ],
-      "text": "Z"
-    },
-    {
-      "id": "vec12",
-      "type": "vector",
-      "points": [
-        [
-          0.02489975,
-          0.00076151,
-          0.04300672
-        ],
-        [
-          0.0247541,
-          -0.00186776,
-          0.52037371
-        ]
+      "flips": [
+        false,
+        true,
+        true
       ],
-      "text": "X"
+      "style": {
+        "fontSize": 16,
+        "fontFamily": "sans",
+        "bold": true,
+        "italic": false,
+        "color": "#18202a",
+        "background": "#ffffff",
+        "borderColor": "#222222",
+        "appearance": "box"
+      }
     }
   ],
-  "publicationId": "21eb028f-def4-486b-9dea-c6d929ebacc3"
+  "publicationId": "2e9d283b-4503-4f8f-8e44-14ec327ae2e8"
 }
