@@ -1,0 +1,308 @@
+{
+  "version": 1,
+  "model": "model-ebb7aec401988fe02f531d0adb1ca5939ebb8a4615d63a92b8054d40cc4abbda.glb",
+  "settings": {
+    "displayScale": 1,
+    "unit": "m"
+  },
+  "title": "Problem 8.53",
+  "annotations": [
+    {
+      "id": "origin1",
+      "type": "origin",
+      "text": "C",
+      "position": [
+        -0.00100369,
+        0,
+        0.47679202
+      ],
+      "axisLength": 0.06,
+      "rotation": [
+        0,
+        90,
+        0
+      ],
+      "flips": [
+        true,
+        false,
+        false
+      ],
+      "style": {
+        "fontSize": 16,
+        "fontFamily": "sans",
+        "bold": true,
+        "italic": false,
+        "color": "#18202a",
+        "background": "#ffffff",
+        "borderColor": "#222222",
+        "appearance": "box"
+      }
+    },
+    {
+      "id": "label6",
+      "type": "label",
+      "text": "A",
+      "position": [
+        -0.07323201,
+        0.0375,
+        0.09030858
+      ],
+      "style": {
+        "fontSize": 20,
+        "fontFamily": "sans",
+        "bold": true,
+        "italic": false,
+        "color": "#18202a",
+        "background": "#ffffff",
+        "borderColor": "#ff9500",
+        "appearance": "box"
+      }
+    },
+    {
+      "id": "label7",
+      "type": "label",
+      "text": "E",
+      "position": [
+        0.07184016,
+        0.0375,
+        0.09007339
+      ],
+      "style": {
+        "fontSize": 20,
+        "fontFamily": "sans",
+        "bold": true,
+        "italic": false,
+        "color": "#18202a",
+        "background": "#ffffff",
+        "borderColor": "#ff6600",
+        "appearance": "box"
+      }
+    },
+    {
+      "id": "label8",
+      "type": "label",
+      "text": "B",
+      "position": [
+        -0.01791809,
+        0.0375,
+        0.09067642
+      ],
+      "style": {
+        "fontSize": 20,
+        "fontFamily": "sans",
+        "bold": true,
+        "italic": false,
+        "color": "#18202a",
+        "background": "#ffffff",
+        "borderColor": "#ff6600",
+        "appearance": "box"
+      }
+    },
+    {
+      "id": "label9",
+      "type": "label",
+      "text": "D",
+      "position": [
+        0.02210272,
+        0.0375,
+        0.09097675
+      ],
+      "style": {
+        "fontSize": 20,
+        "fontFamily": "sans",
+        "bold": true,
+        "italic": false,
+        "color": "#18202a",
+        "background": "#ffffff",
+        "borderColor": "#ff7300",
+        "appearance": "box"
+      }
+    },
+    {
+      "id": "label11",
+      "type": "label",
+      "text": "13 kN",
+      "position": [
+        -0.00204972,
+        -0.08890592,
+        0.47641739
+      ],
+      "style": {
+        "fontSize": 16,
+        "fontFamily": "sans",
+        "bold": true,
+        "italic": false,
+        "color": "#ff0000",
+        "background": "#ffffff",
+        "borderColor": "#ff0000",
+        "appearance": "box"
+      }
+    },
+    {
+      "id": "label12",
+      "type": "label",
+      "text": "9 kN",
+      "position": [
+        0.09315627,
+        0.0016193,
+        0.4769014
+      ],
+      "style": {
+        "fontSize": 16,
+        "fontFamily": "sans",
+        "bold": true,
+        "italic": false,
+        "color": "#ff0000",
+        "background": "#ffffff",
+        "borderColor": "#ff0000",
+        "appearance": "box"
+      }
+    },
+    {
+      "id": "dim13",
+      "type": "dimension",
+      "points": [
+        [
+          -0.075,
+          -0.02472628,
+          0.474565
+        ],
+        [
+          -0.075,
+          -0.03734902,
+          0.47485934
+        ]
+      ],
+      "rawDistance": 0.012626171278071589,
+      "autoText": false,
+      "text": "t = 13mm",
+      "style": {
+        "fontSize": 11,
+        "fontFamily": "sans",
+        "bold": true,
+        "italic": false,
+        "color": "#18202a",
+        "background": "#ffffff",
+        "borderColor": "#222222",
+        "appearance": "box"
+      }
+    },
+    {
+      "id": "dim17",
+      "type": "dimension",
+      "points": [
+        [
+          -0.07358123,
+          0.0375,
+          0.09130884
+        ],
+        [
+          -0.01189983,
+          0.0375,
+          0.09128045
+        ]
+      ],
+      "rawDistance": 0.06168140653350975,
+      "autoText": false,
+      "text": "60 mm",
+      "style": {
+        "fontSize": 10,
+        "fontFamily": "sans",
+        "bold": true,
+        "italic": false,
+        "color": "#18202a",
+        "background": "#ffffff",
+        "borderColor": "#222222",
+        "appearance": "box"
+      }
+    },
+    {
+      "id": "dim18",
+      "type": "dimension",
+      "points": [
+        [
+          0.01526273,
+          0.0375,
+          0.09086555
+        ],
+        [
+          -0.01172144,
+          0.0375,
+          0.09154637
+        ]
+      ],
+      "rawDistance": 0.02699275729638045,
+      "autoText": false,
+      "text": "30 mm",
+      "style": {
+        "fontSize": 10,
+        "fontFamily": "sans",
+        "bold": true,
+        "italic": false,
+        "color": "#18202a",
+        "background": "#ffffff",
+        "borderColor": "#222222",
+        "appearance": "box"
+      }
+    },
+    {
+      "id": "dim19",
+      "type": "dimension",
+      "points": [
+        [
+          0.07013567,
+          0.0375,
+          0.09159734
+        ],
+        [
+          0.01556938,
+          0.0375,
+          0.09113751
+        ]
+      ],
+      "rawDistance": 0.05456822745877861,
+      "autoText": false,
+      "text": "60 mm",
+      "style": {
+        "fontSize": 10,
+        "fontFamily": "sans",
+        "bold": true,
+        "italic": false,
+        "color": "#18202a",
+        "background": "#ffffff",
+        "borderColor": "#222222",
+        "appearance": "box"
+      }
+    },
+    {
+      "id": "dim20",
+      "type": "dimension",
+      "points": [
+        [
+          0.069158,
+          0.0375,
+          0.09268097
+        ],
+        [
+          0.07457629,
+          0.03691879,
+          0.47499999
+        ]
+      ],
+      "rawDistance": 0.38235785427443303,
+      "autoText": false,
+      "text": "400 mm",
+      "style": {
+        "fontSize": 16,
+        "fontFamily": "sans",
+        "bold": true,
+        "italic": false,
+        "color": "#18202a",
+        "background": "#ffffff",
+        "borderColor": "#222222",
+        "appearance": "box"
+      }
+    }
+  ],
+  "publicationId": "f4cdd3f5-be73-4fe6-bcc8-279ed5de04ca"
+}
