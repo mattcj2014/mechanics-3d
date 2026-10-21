@@ -1,0 +1,308 @@
+{
+  "version": 1,
+  "model": "model-c8464ff1255b1f91f4a0db150d902aeae677d719531338e96cfa45906a54ea72.glb",
+  "settings": {
+    "displayScale": 1,
+    "unit": "m"
+  },
+  "title": "Problem 3.26",
+  "annotations": [
+    {
+      "id": "label9",
+      "type": "label",
+      "text": "D",
+      "position": [
+        0.00150081,
+        0.00000785,
+        0.0020049
+      ],
+      "style": {
+        "fontSize": 16,
+        "fontFamily": "sans",
+        "bold": true,
+        "italic": false,
+        "color": "#18202a",
+        "background": "#ffffff",
+        "borderColor": "#222222",
+        "appearance": "box"
+      }
+    },
+    {
+      "id": "label10",
+      "type": "label",
+      "text": "B",
+      "position": [
+        0.00249978,
+        0.002004,
+        3.6e-7
+      ],
+      "style": {
+        "fontSize": 16,
+        "fontFamily": "sans",
+        "bold": true,
+        "italic": false,
+        "color": "#18202a",
+        "background": "#ffffff",
+        "borderColor": "#ff7b00",
+        "appearance": "box"
+      }
+    },
+    {
+      "id": "label11",
+      "type": "label",
+      "text": "E",
+      "position": [
+        0.00150479,
+        0.00000644,
+        -0.00200132
+      ],
+      "style": {
+        "fontSize": 16,
+        "fontFamily": "sans",
+        "bold": true,
+        "italic": false,
+        "color": "#18202a",
+        "background": "#ffffff",
+        "borderColor": "#222222",
+        "appearance": "box"
+      }
+    },
+    {
+      "id": "label12",
+      "type": "label",
+      "text": "A",
+      "position": [
+        0.00000263,
+        0.002,
+        0.0000047
+      ],
+      "style": {
+        "fontSize": 16,
+        "fontFamily": "sans",
+        "bold": true,
+        "italic": false,
+        "color": "#18202a",
+        "background": "#ffffff",
+        "borderColor": "#ff8800",
+        "appearance": "box"
+      }
+    },
+    {
+      "id": "origin13",
+      "type": "origin",
+      "text": "O (0, 0, 0)",
+      "position": [
+        0,
+        0.00000338,
+        -1.8e-7
+      ],
+      "axisLength": 0.004,
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "flips": [
+        false,
+        false,
+        false
+      ],
+      "style": {
+        "fontSize": 16,
+        "fontFamily": "sans",
+        "bold": true,
+        "italic": false,
+        "color": "#18202a",
+        "background": "#ffffff",
+        "borderColor": "#ff8800",
+        "appearance": "box"
+      }
+    },
+    {
+      "id": "dim14",
+      "type": "dimension",
+      "points": [
+        [
+          0.00150111,
+          0,
+          0.00200018
+        ],
+        [
+          0.00149648,
+          0,
+          0.00002418
+        ]
+      ],
+      "rawDistance": 0.001976005424309356,
+      "autoText": false,
+      "text": "2 m",
+      "style": {
+        "fontSize": 16,
+        "fontFamily": "sans",
+        "bold": true,
+        "italic": false,
+        "color": "#18202a",
+        "background": "#ffffff",
+        "borderColor": "#222222",
+        "appearance": "box"
+      }
+    },
+    {
+      "id": "dim15",
+      "type": "dimension",
+      "points": [
+        [
+          0.00150047,
+          0.00000721,
+          0.00005
+        ],
+        [
+          0.00249609,
+          0.0000097,
+          0.00005
+        ]
+      ],
+      "rawDistance": 0.0009956231136830842,
+      "autoText": false,
+      "text": "1 m",
+      "style": {
+        "fontSize": 16,
+        "fontFamily": "sans",
+        "bold": true,
+        "italic": false,
+        "color": "#18202a",
+        "background": "#ffffff",
+        "borderColor": "#222222",
+        "appearance": "box"
+      }
+    },
+    {
+      "id": "dim16",
+      "type": "dimension",
+      "points": [
+        [
+          0.0025,
+          0.00000367,
+          0.00000316
+        ],
+        [
+          0.00250122,
+          0.00199518,
+          0.00000154
+        ]
+      ],
+      "rawDistance": 0.0019915110325830483,
+      "autoText": false,
+      "text": "2 m",
+      "style": {
+        "fontSize": 16,
+        "fontFamily": "sans",
+        "bold": true,
+        "italic": false,
+        "color": "#18202a",
+        "background": "#ffffff",
+        "borderColor": "#222222",
+        "appearance": "box"
+      }
+    },
+    {
+      "id": "dim17",
+      "type": "dimension",
+      "points": [
+        [
+          0.00000457,
+          0.002,
+          -0.00000552
+        ],
+        [
+          0.00249982,
+          0.002,
+          0.0000066
+        ]
+      ],
+      "rawDistance": 0.002495279434632522,
+      "autoText": false,
+      "text": "2.5 m",
+      "style": {
+        "fontSize": 16,
+        "fontFamily": "sans",
+        "bold": true,
+        "italic": false,
+        "color": "#18202a",
+        "background": "#ffffff",
+        "borderColor": "#222222",
+        "appearance": "box"
+      }
+    },
+    {
+      "id": "dim18",
+      "type": "dimension",
+      "points": [
+        [
+          0.00149901,
+          0,
+          -0.00200182
+        ],
+        [
+          0.00149906,
+          0.00000649,
+          -0.00005
+        ]
+      ],
+      "rawDistance": 0.0019518307905656168,
+      "autoText": false,
+      "text": "1 m",
+      "style": {
+        "fontSize": 16,
+        "fontFamily": "sans",
+        "bold": true,
+        "italic": false,
+        "color": "#18202a",
+        "background": "#ffffff",
+        "borderColor": "#222222",
+        "appearance": "box"
+      }
+    },
+    {
+      "id": "label19",
+      "type": "label",
+      "text": "C",
+      "position": [
+        0.0025,
+        0.00001553,
+        0.00000744
+      ],
+      "style": {
+        "fontSize": 16,
+        "fontFamily": "sans",
+        "bold": true,
+        "italic": false,
+        "color": "#18202a",
+        "background": "#ffffff",
+        "borderColor": "#ff8800",
+        "appearance": "box"
+      }
+    },
+    {
+      "id": "label20",
+      "type": "label",
+      "text": "900 N",
+      "position": [
+        0.00206612,
+        0.00113261,
+        0.00087476
+      ],
+      "style": {
+        "fontSize": 16,
+        "fontFamily": "sans",
+        "bold": true,
+        "italic": false,
+        "color": "#014b4a",
+        "background": "#ffffff",
+        "borderColor": "#00fbff",
+        "appearance": "box"
+      }
+    }
+  ],
+  "publicationId": "52f9ebd0-b81a-4e7b-afb3-e8e7128a24dd"
+}
