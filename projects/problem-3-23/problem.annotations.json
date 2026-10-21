@@ -1,0 +1,73 @@
+{
+  "version": 1,
+  "model": "model-32a06aa3e9a5d6cdbc6e758b17552c5bff363368a6ad414933d6166f881bba5b.glb",
+  "settings": {
+    "displayScale": 1,
+    "unit": "m"
+  },
+  "title": "Problem 3.23",
+  "annotations": [
+    {
+      "id": "label1",
+      "type": "label",
+      "text": "200 N",
+      "position": [
+        0.04232457,
+        0.05695122,
+        -0.01158351
+      ]
+    },
+    {
+      "id": "label2",
+      "type": "label",
+      "text": "C",
+      "position": [
+        0.04201233,
+        0.03465057,
+        0.0002485
+      ]
+    },
+    {
+      "id": "label4",
+      "type": "label",
+      "text": "A",
+      "position": [
+        0.01169573,
+        -0.00978625,
+        0.00012676
+      ]
+    },
+    {
+      "id": "origin8",
+      "type": "origin",
+      "text": "B",
+      "position": [
+        0.01,
+        0.01891879,
+        -0.0004528
+      ],
+      "axisLength": 0.05,
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "flips": [
+        false,
+        false,
+        false
+      ],
+      "style": {
+        "fontSize": 14,
+        "fontFamily": "sans",
+        "bold": true,
+        "italic": false,
+        "color": "#18202a",
+        "background": "#ffffff",
+        "borderColor": "#222222",
+        "appearance": "box"
+      }
+    }
+  ],
+  "publicationId": "402d1074-8efd-4eca-a164-39385e787104"
+}

@@ -29,6 +29,12 @@
       "title": "Problem 3.94",
       "project": "projects/problem-3-94/problem.annotations.json",
       "hidden": false
+    },
+    {
+      "id": "problem-3-23",
+      "title": "Problem 3.23",
+      "project": "projects/problem-3-23/problem.annotations.json",
+      "hidden": false
     }
   ]
 }
