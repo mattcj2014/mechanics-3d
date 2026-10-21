@@ -1,0 +1,123 @@
+{
+  "version": 1,
+  "model": "model-7ec71b43061246c1cb549497343bd413d7a43a2d57c79ec51c3c92e2b24c827b.glb",
+  "settings": {
+    "displayScale": 1,
+    "unit": "m"
+  },
+  "title": "Problem 4.8",
+  "annotations": [
+    {
+      "id": "label21",
+      "type": "label",
+      "text": "E",
+      "position": [
+        0.15316857,
+        0.08716556,
+        0.06760624
+      ],
+      "style": {
+        "fontSize": 10,
+        "fontFamily": "sans",
+        "bold": true,
+        "italic": false,
+        "color": "#18202a",
+        "background": "#ffffff",
+        "borderColor": "#222222",
+        "appearance": "box"
+      }
+    },
+    {
+      "id": "label22",
+      "type": "label",
+      "text": "B",
+      "position": [
+        0.20326258,
+        0.08746891,
+        0.06739014
+      ],
+      "style": {
+        "fontSize": 10,
+        "fontFamily": "sans",
+        "bold": true,
+        "italic": false,
+        "color": "#18202a",
+        "background": "#ffffff",
+        "borderColor": "#222222",
+        "appearance": "box"
+      }
+    },
+    {
+      "id": "label23",
+      "type": "label",
+      "text": "D",
+      "position": [
+        0.00101081,
+        0.18884726,
+        -0.13607051
+      ],
+      "style": {
+        "fontSize": 10,
+        "fontFamily": "sans",
+        "bold": true,
+        "italic": false,
+        "color": "#18202a",
+        "background": "#ffffff",
+        "borderColor": "#222222",
+        "appearance": "box"
+      }
+    },
+    {
+      "id": "label24",
+      "type": "label",
+      "text": "C",
+      "position": [
+        0.00063561,
+        0.16331438,
+        0.11857451
+      ],
+      "style": {
+        "fontSize": 10,
+        "fontFamily": "sans",
+        "bold": true,
+        "italic": false,
+        "color": "#18202a",
+        "background": "#ffffff",
+        "borderColor": "#222222",
+        "appearance": "box"
+      }
+    },
+    {
+      "id": "origin26",
+      "type": "origin",
+      "text": "A (0, 0, 0)",
+      "position": [
+        0.00614818,
+        0.08654991,
+        0.06728588
+      ],
+      "axisLength": 0.05,
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "flips": [
+        false,
+        false,
+        false
+      ],
+      "style": {
+        "fontSize": 4,
+        "fontFamily": "sans",
+        "bold": true,
+        "italic": false,
+        "color": "#18202a",
+        "background": "#ffffff",
+        "borderColor": "#222222",
+        "appearance": "box"
+      }
+    }
+  ],
+  "publicationId": "2e3f3fa0-0cf7-4936-ad7d-6b8b802d070c"
+}
