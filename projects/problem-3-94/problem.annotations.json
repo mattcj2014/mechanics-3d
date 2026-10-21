@@ -1,0 +1,103 @@
+{
+  "version": 1,
+  "model": "model-cd117110dddf220b5d5c3478264050bdae8588ba619531c5aa4c71e931dfd7b1.glb",
+  "settings": {
+    "displayScale": 1,
+    "unit": "m"
+  },
+  "title": "problem 3.94",
+  "annotations": [
+    {
+      "id": "label21",
+      "type": "label",
+      "text": "2.6 kips",
+      "position": [
+        0.15362983,
+        0.24500776,
+        -0.02869692
+      ],
+      "style": {
+        "fontSize": 24,
+        "fontFamily": "sans",
+        "bold": true,
+        "italic": false,
+        "color": "#ff0000",
+        "background": "#ffffff",
+        "borderColor": "#ff0000",
+        "appearance": "box"
+      }
+    },
+    {
+      "id": "origin22",
+      "type": "origin",
+      "text": "A",
+      "position": [
+        -0.00058232,
+        0,
+        -0.00192236
+      ],
+      "axisLength": 0.23,
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "flips": [
+        false,
+        false,
+        false
+      ],
+      "style": {
+        "fontSize": 16,
+        "fontFamily": "sans",
+        "bold": true,
+        "italic": false,
+        "color": "#18202a",
+        "background": "#ffffff",
+        "borderColor": "#222222",
+        "appearance": "box"
+      }
+    },
+    {
+      "id": "label23",
+      "type": "label",
+      "text": "D",
+      "position": [
+        0.15264517,
+        0.31739974,
+        0.00025066
+      ],
+      "style": {
+        "fontSize": 20,
+        "fontFamily": "sans",
+        "bold": true,
+        "italic": false,
+        "color": "#18202a",
+        "background": "#ffffff",
+        "borderColor": "#222222",
+        "appearance": "box"
+      }
+    },
+    {
+      "id": "label26",
+      "type": "label",
+      "text": "B",
+      "position": [
+        -0.01182312,
+        0.32652337,
+        0.00148729
+      ],
+      "style": {
+        "fontSize": 16,
+        "fontFamily": "sans",
+        "bold": true,
+        "italic": false,
+        "color": "#18202a",
+        "background": "#ffffff",
+        "borderColor": "#222222",
+        "appearance": "box"
+      }
+    }
+  ],
+  "publicationId": "6931bf81-9d81-4f58-918d-60bd61423d77"
+}
