@@ -15,7 +15,17 @@
         0.04232457,
         0.05695122,
         -0.01158351
-      ]
+      ],
+      "style": {
+        "fontSize": 16,
+        "fontFamily": "sans",
+        "bold": true,
+        "italic": false,
+        "color": "#ff0000",
+        "background": "#ffffff",
+        "borderColor": "#ff0000",
+        "appearance": "box"
+      }
     },
     {
       "id": "label2",
@@ -69,5 +79,5 @@
       }
     }
   ],
-  "publicationId": "b75371ab-5275-4b63-8ef3-54a2d4ba951e"
+  "publicationId": "2c655021-aa37-4669-bc80-bc87376a432c"
 }
